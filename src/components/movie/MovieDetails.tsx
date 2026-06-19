@@ -1,11 +1,11 @@
-import Image from "next/image";
 import Link from "next/link";
 
 import { FavoriteButton } from "@/components/movie/FavoriteButton";
+import { MoviePoster } from "@/components/movie/MoviePoster";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
-import { isValidPosterUrl } from "@/lib/omdb/constants";
 import { formatMediaType } from "@/lib/omdb/format-media-type";
+import { isValidPosterUrl } from "@/lib/omdb/constants";
 import { toFavoriteMovie, type OmdbMovieDetails } from "@/lib/omdb/types";
 import { getSearchBasePath } from "@/lib/search/build-search-url";
 import { interactiveLinkClassName } from "@/lib/ui/classes";
@@ -34,26 +34,17 @@ function DetailRow({
 }
 
 export function MovieDetails({ movie, locale, dictionary }: MovieDetailsProps) {
-  const hasPoster = isValidPosterUrl(movie.Poster);
-
   return (
     <article className="grid gap-8 lg:grid-cols-[minmax(0,280px)_1fr] lg:items-start">
       <div className="mx-auto w-full max-w-[280px] lg:mx-0">
         <div className="relative aspect-[2/3] overflow-hidden rounded-xl border border-border bg-surface-elevated">
-          {hasPoster ? (
-            <Image
-              src={movie.Poster}
-              alt={`${movie.Title} poster`}
-              fill
-              sizes="280px"
-              priority
-              className="object-cover"
-            />
-          ) : (
-            <div className="flex h-full min-h-[360px] items-center justify-center px-4 text-center text-sm text-muted">
-              {dictionary.movie.noPoster}
-            </div>
-          )}
+          <MoviePoster
+            src={movie.Poster}
+            alt={`${movie.Title} poster`}
+            sizes="280px"
+            placeholderLabel={dictionary.movie.noPoster}
+            priority
+          />
         </div>
         <FavoriteButton
           movie={toFavoriteMovie(movie)}

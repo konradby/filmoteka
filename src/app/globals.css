@@ -77,6 +77,11 @@ input[type="search"]::-webkit-search-cancel-button {
   filter: invert(1);
 }
 
+select option {
+  background: var(--surface-elevated);
+  color: var(--foreground);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

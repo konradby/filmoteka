@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { AppProviders } from "@/components/providers/AppProviders";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { SkipLink } from "@/components/layout/SkipLink";
 import { locales, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
-import { FavoritesProvider } from "@/lib/favorites/context";
 import { buildPageMetadata } from "@/lib/seo/site";
 
 export function generateStaticParams() {
@@ -53,11 +53,11 @@ export default async function LocaleLayout({
         }}
       />
       <SkipLink locale={locale} dictionary={dictionary} />
-      <FavoritesProvider>
+      <AppProviders dictionary={dictionary}>
         <Header locale={locale} dictionary={dictionary} />
         {children}
         <Footer locale={locale} dictionary={dictionary} />
-      </FavoritesProvider>
+      </AppProviders>
     </>
   );
 }

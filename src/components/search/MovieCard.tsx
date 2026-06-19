@@ -1,13 +1,12 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 
 import { FavoriteButton } from "@/components/movie/FavoriteButton";
+import { MoviePoster } from "@/components/movie/MoviePoster";
 import { StarRating } from "@/components/movie/StarRating";
 import type { Locale } from "@/i18n/config";
 import { formatMessage, type Dictionary } from "@/i18n/get-dictionary";
-import { isValidPosterUrl } from "@/lib/omdb/constants";
 import { formatMediaType } from "@/lib/omdb/format-media-type";
 import { parseImdbRating } from "@/lib/movie/rating";
 import { toFavoriteMovie, type OmdbSearchItem } from "@/lib/omdb/types";
@@ -20,7 +19,6 @@ interface MovieCardProps {
 }
 
 export function MovieCard({ movie, locale, dictionary }: MovieCardProps) {
-  const hasPoster = isValidPosterUrl(movie.Poster);
   const rating = parseImdbRating(movie.imdbRating);
   const detailsLabel = formatMessage(dictionary.a11y.openMovieDetails, {
     title: movie.Title,
@@ -33,20 +31,14 @@ export function MovieCard({ movie, locale, dictionary }: MovieCardProps) {
         aria-label={detailsLabel}
         className={`${interactiveLinkClassName} relative block aspect-[2/3] w-full overflow-hidden bg-surface-elevated`}
       >
-        {hasPoster ? (
-          <Image
-            src={movie.Poster}
-            alt=""
-            aria-hidden="true"
-            fill
-            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-            className="object-cover transition-transform duration-300 hover:scale-[1.02]"
-          />
-        ) : (
-          <div className="flex h-full min-h-[180px] items-center justify-center px-4 text-center text-sm text-muted">
-            {dictionary.movie.noPoster}
-          </div>
-        )}
+        <MoviePoster
+          src={movie.Poster}
+          alt={detailsLabel}
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+          placeholderLabel={dictionary.movie.noPoster}
+          decorative
+          imageClassName="object-cover transition-transform duration-300 hover:scale-[1.02]"
+        />
         {rating !== null && (
           <div className="absolute bottom-2 left-2 rounded-md border border-border/60 bg-background/90 px-2 py-1 backdrop-blur-sm">
             <StarRating

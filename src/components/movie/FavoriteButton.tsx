@@ -4,6 +4,7 @@ import type { Dictionary } from "@/i18n/get-dictionary";
 import { formatMessage } from "@/i18n/get-dictionary";
 import { useFavorites } from "@/lib/favorites/context";
 import type { FavoriteMovie } from "@/lib/favorites/types";
+import { useFavoriteToast } from "@/lib/favorites/use-favorite-toast";
 import { interactiveButtonClassName } from "@/lib/ui/classes";
 
 interface FavoriteButtonProps {
@@ -20,6 +21,7 @@ export function FavoriteButton({
   variant = "default",
 }: FavoriteButtonProps) {
   const { isHydrated, isFavorite, toggle } = useFavorites();
+  const showFavoriteToast = useFavoriteToast(dictionary);
   const active = isHydrated && isFavorite(movie.imdbID);
 
   const label = active
@@ -30,10 +32,15 @@ export function FavoriteButton({
     title: movie.Title,
   });
 
+  function handleClick() {
+    const result = toggle(movie);
+    showFavoriteToast(result, movie.Title);
+  }
+
   return (
     <button
       type="button"
-      onClick={() => toggle(movie)}
+      onClick={handleClick}
       aria-pressed={active}
       aria-label={ariaLabel}
       disabled={!isHydrated}

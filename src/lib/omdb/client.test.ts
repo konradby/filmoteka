@@ -94,6 +94,28 @@ describe("omdb client", () => {
     expect(result.page).toBe(1);
   });
 
+  it("caches omdb responses for 30 minutes", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () =>
+        createSearchResponse(
+          Array.from({ length: 1 }, (_, index) => createSearchItem(index + 1)),
+          1,
+        ),
+    });
+
+    vi.stubGlobal("fetch", fetchMock);
+
+    await searchMovies({ query: "batman", page: 1 });
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      expect.stringContaining("omdbapi.com"),
+      expect.objectContaining({
+        next: { revalidate: 1800 },
+      }),
+    );
+  });
+
   it("maps not found search errors to empty results", async () => {
     vi.stubGlobal(
       "fetch",

@@ -39,7 +39,11 @@ export function getFavorites(): FavoriteMovie[] {
 }
 
 export function saveFavorites(favorites: FavoriteMovie[]): void {
-  localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favorites));
+  try {
+    localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favorites));
+  } catch {
+    throw new Error("Failed to save favorites");
+  }
 }
 
 export function addFavorite(movie: FavoriteMovie): FavoriteMovie[] {

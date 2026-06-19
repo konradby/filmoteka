@@ -36,7 +36,7 @@ cp .env.example .env.local
 npm run dev
 ```
 
-Aplikacja będzie dostępna pod adresem [http://localhost:3000](http://localhost:3000). Middleware przekieruje na `/pl` lub `/en` w zależności od języka przeglądarki.
+Aplikacja będzie dostępna pod adresem [http://localhost:3000](http://localhost:3000). Middleware przekieruje na `/en` (domyślnie) lub `/pl` w zależności od języka przeglądarki.
 
 ## Skrypty
 

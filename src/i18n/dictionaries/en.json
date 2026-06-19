@@ -81,6 +81,11 @@
     "remove": "Remove",
     "count": "{count} items"
   },
+  "toast": {
+    "addSuccess": "Added “{title}” to favorites.",
+    "removeSuccess": "Removed “{title}” from favorites.",
+    "error": "Could not save your change. Please try again."
+  },
   "errors": {
     "generic": "Something went wrong. Please try again.",
     "notFound": "Movie not found.",
@@ -102,11 +107,13 @@
     "loadingResults": "Loading search results",
     "loadingMovie": "Loading movie details",
     "searchStatus": "Search status",
-    "imdbRating": "IMDb rating: {rating} out of 10"
+    "imdbRating": "IMDb rating: {rating} out of 10",
+    "dismissToast": "Dismiss notification"
   },
   "footer": {
     "tagline": "Filmoteka — OMDb movie and series search.",
-    "dataSource": "Movie data provided by the OMDb API."
+    "dataSource": "Movie data provided by the OMDb API.",
+    "language": "Language"
   },
   "meta": {
     "defaultTitle": "Filmoteka — OMDb movie search",

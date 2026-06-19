@@ -1,12 +1,12 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 
+import { MoviePoster } from "@/components/movie/MoviePoster";
 import type { Locale } from "@/i18n/config";
 import { formatMessage, type Dictionary } from "@/i18n/get-dictionary";
 import { useFavorites } from "@/lib/favorites/context";
-import { isValidPosterUrl } from "@/lib/omdb/constants";
+import { useFavoriteToast } from "@/lib/favorites/use-favorite-toast";
 import {
   interactiveButtonClassName,
   interactiveLinkClassName,
@@ -20,6 +20,12 @@ interface FavoritesListProps {
 
 export function FavoritesList({ locale, dictionary }: FavoritesListProps) {
   const { favorites, isHydrated, remove } = useFavorites();
+  const showFavoriteToast = useFavoriteToast(dictionary);
+
+  function handleRemove(imdbId: string, title: string) {
+    const result = remove(imdbId);
+    showFavoriteToast(result, title);
+  }
 
   if (!isHydrated) {
     return (
@@ -51,7 +57,6 @@ export function FavoritesList({ locale, dictionary }: FavoritesListProps) {
       aria-label={dictionary.favorites.title}
     >
       {favorites.map((movie) => {
-        const hasPoster = isValidPosterUrl(movie.Poster);
         const detailsLabel = formatMessage(dictionary.a11y.openMovieDetails, {
           title: movie.Title,
         });
@@ -69,20 +74,13 @@ export function FavoritesList({ locale, dictionary }: FavoritesListProps) {
               aria-label={detailsLabel}
               className={`${interactiveLinkClassName} relative block aspect-[2/3] w-full overflow-hidden bg-surface-elevated`}
             >
-              {hasPoster ? (
-                <Image
-                  src={movie.Poster}
-                  alt=""
-                  aria-hidden="true"
-                  fill
-                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                  className="object-cover"
-                />
-              ) : (
-                <div className="flex h-full min-h-[180px] items-center justify-center px-4 text-center text-sm text-muted">
-                  {dictionary.movie.noPoster}
-                </div>
-              )}
+              <MoviePoster
+                src={movie.Poster}
+                alt={detailsLabel}
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                placeholderLabel={dictionary.movie.noPoster}
+                decorative
+              />
             </Link>
             <div className="flex flex-1 flex-col gap-3 p-4">
               <div className="space-y-1">
@@ -98,7 +96,7 @@ export function FavoritesList({ locale, dictionary }: FavoritesListProps) {
               </div>
               <button
                 type="button"
-                onClick={() => remove(movie.imdbID)}
+                onClick={() => handleRemove(movie.imdbID, movie.Title)}
                 aria-label={removeLabel}
                 className={`${interactiveButtonClassName} mt-auto inline-flex w-full items-center justify-center rounded-lg border border-red-900/60 bg-surface-elevated px-3 py-2.5 text-sm font-medium text-red-400 transition-colors hover:border-red-500 hover:bg-red-950/40 focus-visible:ring-red-500`}
               >

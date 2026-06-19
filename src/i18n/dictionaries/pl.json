@@ -81,6 +81,11 @@
     "remove": "Usuń",
     "count": "{count} pozycji"
   },
+  "toast": {
+    "addSuccess": "Dodano „{title}” do ulubionych.",
+    "removeSuccess": "Usunięto „{title}” z ulubionych.",
+    "error": "Nie udało się zapisać zmiany. Spróbuj ponownie."
+  },
   "errors": {
     "generic": "Wystąpił błąd. Spróbuj ponownie.",
     "notFound": "Nie znaleziono filmu.",
@@ -102,11 +107,13 @@
     "loadingResults": "Trwa ładowanie wyników wyszukiwania",
     "loadingMovie": "Trwa ładowanie szczegółów filmu",
     "searchStatus": "Status wyszukiwania",
-    "imdbRating": "Ocena IMDb: {rating} na 10"
+    "imdbRating": "Ocena IMDb: {rating} na 10",
+    "dismissToast": "Zamknij powiadomienie"
   },
   "footer": {
     "tagline": "Filmoteka — wyszukiwarka filmów i seriali OMDb.",
-    "dataSource": "Dane filmowe dostarcza OMDb API."
+    "dataSource": "Dane filmowe dostarcza OMDb API.",
+    "language": "Język"
   },
   "meta": {
     "defaultTitle": "Filmoteka — wyszukiwarka filmów OMDb",

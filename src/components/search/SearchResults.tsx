@@ -1,6 +1,7 @@
 import { MovieList } from "@/components/search/MovieList";
 import { Pagination } from "@/components/search/Pagination";
-import { SearchResultsSort } from "@/components/search/SearchResultsSort";import { EmptyState } from "@/components/ui/EmptyState";
+import { SearchResultsSort } from "@/components/search/SearchResultsSort";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { ErrorMessage } from "@/components/ui/ErrorMessage";
 import type { Locale } from "@/i18n/config";
 import { formatMessage, type Dictionary } from "@/i18n/get-dictionary";

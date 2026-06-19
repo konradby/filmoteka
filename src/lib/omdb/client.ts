@@ -6,6 +6,7 @@ import {
   FETCH_TIMEOUT_MS,
   OMDB_API_PAGE_SIZE,
   OMDB_BASE_URL,
+  OMDB_CACHE_REVALIDATE_SECONDS,
   RATING_SORT_FETCH_LIMIT,
   RESULTS_PER_PAGE,
 } from "@/lib/omdb/constants";
@@ -55,7 +56,7 @@ async function fetchOmdb<T>(params: Record<string, string>): Promise<T> {
   try {
     const response = await fetch(url.toString(), {
       signal: controller.signal,
-      cache: "no-store",
+      next: { revalidate: OMDB_CACHE_REVALIDATE_SECONDS },
     });
 
     if (!response.ok) {

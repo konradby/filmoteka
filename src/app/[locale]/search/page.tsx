@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
 import { SearchForm } from "@/components/search/SearchForm";
@@ -7,6 +8,11 @@ import { SearchResultsSkeleton } from "@/components/search/SearchResultsSkeleton
 import type { Locale } from "@/i18n/config";
 import { formatMessage, getDictionary } from "@/i18n/get-dictionary";
 import { buildPageMetadata, getSearchUrl } from "@/lib/seo/site";
+import { buildSearchUrl } from "@/lib/search/build-search-url";
+import {
+  getEffectiveSearchQuery,
+  shouldApplyDefaultSearchQuery,
+} from "@/lib/search/defaults";
 import { parseSearchSort } from "@/lib/search/sort";
 
 export const dynamic = "force-dynamic";
@@ -30,29 +36,20 @@ export async function generateMetadata({
   const locale = localeParam as Locale;
   const dictionary = getDictionary(locale);
   const resolvedSearchParams = await searchParams;
-  const query = resolvedSearchParams.q?.trim() ?? "";
-
-  if (query) {
-    return buildPageMetadata({
-      locale,
-      title: formatMessage(dictionary.meta.searchTitle, { query }),
-      description: formatMessage(dictionary.search.resultsFor, { query }),
-      path: "/search",
-      canonicalUrl: getSearchUrl(locale, {
-        q: query,
-        year: resolvedSearchParams.year,
-        type: resolvedSearchParams.type,
-        page: resolvedSearchParams.page,
-        sort: resolvedSearchParams.sort,
-      }),
-    });
-  }
+  const query = getEffectiveSearchQuery(resolvedSearchParams.q);
 
   return buildPageMetadata({
     locale,
-    title: dictionary.search.title,
-    description: dictionary.search.subtitle,
+    title: formatMessage(dictionary.meta.searchTitle, { query }),
+    description: formatMessage(dictionary.search.resultsFor, { query }),
     path: "/search",
+    canonicalUrl: getSearchUrl(locale, {
+      q: query,
+      year: resolvedSearchParams.year,
+      type: resolvedSearchParams.type,
+      page: resolvedSearchParams.page,
+      sort: resolvedSearchParams.sort,
+    }),
   });
 }
 
@@ -80,6 +77,18 @@ export default async function SearchPage({
   const locale = localeParam as Locale;
   const dictionary = getDictionary(locale);
   const resolvedSearchParams = await searchParams;
+
+  if (shouldApplyDefaultSearchQuery(resolvedSearchParams.q)) {
+    redirect(
+      buildSearchUrl(locale, {
+        q: getEffectiveSearchQuery(resolvedSearchParams.q),
+        year: resolvedSearchParams.year,
+        type: resolvedSearchParams.type,
+        page: Number.parseInt(resolvedSearchParams.page ?? "1", 10) || 1,
+        sort: parseSearchSort(resolvedSearchParams.sort),
+      }),
+    );
+  }
 
   const query = resolvedSearchParams.q?.trim() ?? "";
   const year = resolvedSearchParams.year?.trim() ?? "";

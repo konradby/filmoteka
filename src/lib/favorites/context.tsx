@@ -10,15 +10,18 @@ import {
 } from "react";
 
 import { getFavorites, saveFavorites } from "@/lib/favorites/storage";
-import type { FavoriteMovie } from "@/lib/favorites/types";
+import type {
+  FavoriteActionResult,
+  FavoriteMovie,
+} from "@/lib/favorites/types";
 
 interface FavoritesContextValue {
   favorites: FavoriteMovie[];
   isHydrated: boolean;
   isFavorite: (imdbId: string) => boolean;
-  add: (movie: FavoriteMovie) => void;
-  remove: (imdbId: string) => void;
-  toggle: (movie: FavoriteMovie) => boolean;
+  add: (movie: FavoriteMovie) => FavoriteActionResult;
+  remove: (imdbId: string) => FavoriteActionResult;
+  toggle: (movie: FavoriteMovie) => FavoriteActionResult;
 }
 
 const FavoritesContext = createContext<FavoritesContextValue | null>(null);
@@ -57,10 +60,15 @@ function getServerHydrationSnapshot(): boolean {
   return false;
 }
 
-function persistFavorites(next: FavoriteMovie[]) {
-  favoritesCache = next;
-  saveFavorites(next);
-  emitChange();
+function persistFavorites(next: FavoriteMovie[]): boolean {
+  try {
+    saveFavorites(next);
+    favoritesCache = next;
+    emitChange();
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 export function FavoritesProvider({ children }: { children: ReactNode }) {
@@ -81,26 +89,45 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
     [favorites],
   );
 
-  const add = useCallback((movie: FavoriteMovie) => {
-    if (favoritesCache.some((item) => item.imdbID === movie.imdbID)) {
-      return;
+  const add = useCallback((movie: FavoriteMovie): FavoriteActionResult => {
+    if (!movie.imdbID) {
+      return { ok: false, action: "add" };
     }
-    persistFavorites([...favoritesCache, movie]);
+
+    if (favoritesCache.some((item) => item.imdbID === movie.imdbID)) {
+      return { ok: true, action: "add" };
+    }
+
+    const updated = [...favoritesCache, movie];
+    return persistFavorites(updated)
+      ? { ok: true, action: "add" }
+      : { ok: false, action: "add" };
   }, []);
 
-  const remove = useCallback((imdbId: string) => {
-    persistFavorites(favoritesCache.filter((item) => item.imdbID !== imdbId));
+  const remove = useCallback((imdbId: string): FavoriteActionResult => {
+    if (!imdbId) {
+      return { ok: false, action: "remove" };
+    }
+
+    if (!favoritesCache.some((item) => item.imdbID === imdbId)) {
+      return { ok: true, action: "remove" };
+    }
+
+    const updated = favoritesCache.filter((item) => item.imdbID !== imdbId);
+    return persistFavorites(updated)
+      ? { ok: true, action: "remove" }
+      : { ok: false, action: "remove" };
   }, []);
 
-  const toggle = useCallback((movie: FavoriteMovie) => {
+  const toggle = useCallback((movie: FavoriteMovie): FavoriteActionResult => {
     const exists = favoritesCache.some((item) => item.imdbID === movie.imdbID);
-    const updated = exists
-      ? favoritesCache.filter((item) => item.imdbID !== movie.imdbID)
-      : [...favoritesCache, movie];
 
-    persistFavorites(updated);
-    return !exists;
-  }, []);
+    if (exists) {
+      return remove(movie.imdbID);
+    }
+
+    return add(movie);
+  }, [add, remove]);
 
   const value = useMemo(
     () => ({
