@@ -2,6 +2,8 @@
 
 Aplikacja do wyszukiwania filmów i seriali z wykorzystaniem [OMDb API](https://www.omdbapi.com/). Projekt z naciskiem na type safety, SSR, dostępność (WCAG) i SEO.
 
+**Demo:** [https://filmoteka-omdb.netlify.app/](https://filmoteka-omdb.netlify.app/)
+
 ## Funkcjonalności
 
 - Wyszukiwanie filmów z filtrowaniem po roku premiery i typie (film / serial / odcinek)
