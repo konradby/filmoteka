@@ -13,14 +13,14 @@ export interface SearchUrlParams {
   sort?: SearchSort;
 }
 
-export function getSearchBasePath(locale: string): string {
+export const getSearchBasePath = (locale: string): string => {
   return `/${locale}/search`;
-}
+};
 
-export function buildSearchUrl(
+export const buildSearchUrl = (
   locale: string,
   { q, year, type, page = 1, sort = DEFAULT_SEARCH_SORT }: SearchUrlParams,
-): string {
+): string => {
   const params = new URLSearchParams();
   const trimmedQuery = q.trim();
 

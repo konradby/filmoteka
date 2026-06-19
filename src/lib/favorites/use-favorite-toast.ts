@@ -3,7 +3,7 @@ import { formatMessage } from "@/i18n/get-dictionary";
 import type { FavoriteActionResult } from "@/lib/favorites/types";
 import { useToast } from "@/lib/ui/toast/context";
 
-export function useFavoriteToast(dictionary: Dictionary) {
+export const useFavoriteToast = (dictionary: Dictionary) => {
   const { showToast } = useToast();
 
   return (result: FavoriteActionResult, title: string) => {

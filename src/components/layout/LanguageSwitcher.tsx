@@ -17,14 +17,14 @@ const localeLabels: Record<Locale, string> = {
   pl: "Polski",
 };
 
-export function LanguageSwitcher({
+export const LanguageSwitcher = ({
   locale,
   dictionary,
-}: LanguageSwitcherProps) {
+}: LanguageSwitcherProps) => {
   const router = useRouter();
   const pathname = usePathname();
 
-  function handleChange(event: React.ChangeEvent<HTMLSelectElement>) {
+  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const nextLocale = event.target.value as Locale;
 
     if (nextLocale === locale) {

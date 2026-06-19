@@ -77,25 +77,25 @@ export interface SearchMoviesResult {
   totalPages: number;
 }
 
-export function isOmdbError(
+export const isOmdbError = (
   response: OmdbSearchResponse | OmdbDetailsResponse,
-): response is OmdbErrorResponse {
+): response is OmdbErrorResponse => {
   return response.Response === "False";
-}
+};
 
-export function isSearchSuccess(
+export const isSearchSuccess = (
   response: OmdbSearchResponse,
-): response is OmdbSearchSuccessResponse {
+): response is OmdbSearchSuccessResponse => {
   return response.Response === "True" && Array.isArray(response.Search);
-}
+};
 
-export function isDetailsSuccess(
+export const isDetailsSuccess = (
   response: OmdbDetailsResponse,
-): response is OmdbMovieDetails {
+): response is OmdbMovieDetails => {
   return response.Response === "True" && "imdbID" in response;
-}
+};
 
-export function toFavoriteMovie(item: OmdbSearchItem | OmdbMovieDetails) {
+export const toFavoriteMovie = (item: OmdbSearchItem | OmdbMovieDetails) => {
   return {
     imdbID: normalizeOmdbField(item.imdbID),
     Title: normalizeOmdbField(item.Title),

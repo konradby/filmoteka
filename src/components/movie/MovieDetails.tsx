@@ -16,13 +16,13 @@ interface MovieDetailsProps {
   dictionary: Dictionary;
 }
 
-function DetailRow({
+const DetailRow = ({
   label,
   value,
 }: {
   label: string;
   value: string | undefined;
-}) {
+}) => {
   if (!value) return null;
 
   return (
@@ -33,7 +33,7 @@ function DetailRow({
   );
 }
 
-export function MovieDetails({ movie, locale, dictionary }: MovieDetailsProps) {
+export const MovieDetails = ({ movie, locale, dictionary }: MovieDetailsProps) => {
   return (
     <article className="grid gap-8 lg:grid-cols-[minmax(0,280px)_1fr] lg:items-start">
       <div className="mx-auto w-full max-w-[280px] lg:mx-0">
@@ -119,7 +119,7 @@ export function MovieDetails({ movie, locale, dictionary }: MovieDetailsProps) {
   );
 }
 
-export function buildMovieJsonLd(movie: OmdbMovieDetails, url?: string) {
+export const buildMovieJsonLd = (movie: OmdbMovieDetails, url?: string) => {
   return {
     "@context": "https://schema.org",
     "@type": "Movie",

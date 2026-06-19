@@ -22,9 +22,9 @@ interface HomePageProps {
   }>;
 }
 
-export async function generateMetadata({
+export const generateMetadata = async ({
   params,
-}: HomePageProps): Promise<Metadata> {
+}: HomePageProps): Promise<Metadata> => {
   const { locale: localeParam } = await params;
   const locale = localeParam as Locale;
   const dictionary = getDictionary(locale);
@@ -36,13 +36,13 @@ export async function generateMetadata({
   });
 }
 
-function hasLegacySearchParams(searchParams: {
+const hasLegacySearchParams = (searchParams: {
   q?: string;
   year?: string;
   type?: string;
   page?: string;
   sort?: string;
-}) {
+}) => {
   return Boolean(
     searchParams.q?.trim() ||
       searchParams.year?.trim() ||
@@ -50,9 +50,9 @@ function hasLegacySearchParams(searchParams: {
       searchParams.page ||
       searchParams.sort,
   );
-}
+};
 
-export default async function HomePage({ params, searchParams }: HomePageProps) {
+const HomePage = async ({ params, searchParams }: HomePageProps) => {
   const { locale: localeParam } = await params;
   const locale = localeParam as Locale;
   const dictionary = getDictionary(locale);
@@ -77,4 +77,6 @@ export default async function HomePage({ params, searchParams }: HomePageProps) 
       </LandingHero>
     </main>
   );
-}
+};
+
+export default HomePage;

@@ -11,7 +11,7 @@ interface ErrorProps {
   dictionary: Dictionary;
 }
 
-export function LocaleError({ error, reset, dictionary }: ErrorProps) {
+export const LocaleError = ({ error, reset, dictionary }: ErrorProps) => {
   useEffect(() => {
     console.error(error);
   }, [error]);

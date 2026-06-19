@@ -10,13 +10,13 @@ interface BuildPageHrefParams {
   sort?: SearchSort;
 }
 
-export function buildPageHref({
+export const buildPageHref = ({
   locale,
   page,
   query,
   year,
   type,
   sort,
-}: BuildPageHrefParams): string {
+}: BuildPageHrefParams): string => {
   return buildSearchUrl(locale, { q: query, year, type, page, sort });
-}
+};

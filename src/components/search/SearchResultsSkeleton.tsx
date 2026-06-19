@@ -5,9 +5,9 @@ interface SearchResultsSkeletonProps {
   dictionary: Dictionary;
 }
 
-export function SearchResultsSkeleton({
+export const SearchResultsSkeleton = ({
   dictionary,
-}: SearchResultsSkeletonProps) {
+}: SearchResultsSkeletonProps) => {
   return (
     <section
       role="status"

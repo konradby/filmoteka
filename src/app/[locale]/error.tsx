@@ -5,16 +5,18 @@ import { getDictionary } from "@/i18n/get-dictionary";
 import { defaultLocale, type Locale } from "@/i18n/config";
 import { useParams } from "next/navigation";
 
-export default function ErrorBoundary({
+const ErrorBoundary = ({
   error,
   reset,
 }: {
   error: Error & { digest?: string };
   reset: () => void;
-}) {
+}) => {
   const params = useParams<{ locale: string }>();
   const locale = (params.locale ?? defaultLocale) as Locale;
   const dictionary = getDictionary(locale);
 
   return <LocaleError error={error} reset={reset} dictionary={dictionary} />;
-}
+};
+
+export default ErrorBoundary;

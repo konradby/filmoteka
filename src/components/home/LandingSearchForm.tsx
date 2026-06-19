@@ -16,15 +16,15 @@ interface LandingSearchFormProps {
   dictionary: Dictionary;
 }
 
-export function LandingSearchForm({
+export const LandingSearchForm = ({
   locale,
   dictionary,
-}: LandingSearchFormProps) {
+}: LandingSearchFormProps) => {
   const router = useRouter();
   const [query, setQuery] = useState("");
   const [isPending, setIsPending] = useState(false);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const trimmedQuery = query.trim();

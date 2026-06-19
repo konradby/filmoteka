@@ -2,7 +2,7 @@ import { MovieDetailsSkeleton } from "@/components/movie/MovieDetailsSkeleton";
 import { defaultLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 
-export default function MovieLoading() {
+const MovieLoading = () => {
   const dictionary = getDictionary(defaultLocale);
 
   return (
@@ -10,4 +10,6 @@ export default function MovieLoading() {
       <MovieDetailsSkeleton dictionary={dictionary} />
     </main>
   );
-}
+};
+
+export default MovieLoading;

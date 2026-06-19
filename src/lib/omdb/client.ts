@@ -30,7 +30,7 @@ import {
   type SearchMoviesResult,
 } from "@/lib/omdb/types";
 
-function getApiKey(): string {
+const getApiKey = (): string => {
   const apiKey = process.env.OMDB_API_KEY;
   if (!apiKey) {
     throw new OmdbConfigError(
@@ -40,7 +40,7 @@ function getApiKey(): string {
   return apiKey;
 }
 
-async function fetchOmdb<T>(params: Record<string, string>): Promise<T> {
+const fetchOmdb = async <T>(params: Record<string, string>): Promise<T> => {
   const url = new URL(OMDB_BASE_URL);
   url.searchParams.set("apikey", getApiKey());
 
@@ -79,7 +79,7 @@ async function fetchOmdb<T>(params: Record<string, string>): Promise<T> {
   }
 }
 
-function handleOmdbError(errorMessage: string): never {
+const handleOmdbError = (errorMessage: string): never => {
   const normalized = errorMessage.toLowerCase();
   if (
     normalized.includes("not found") ||
@@ -100,10 +100,10 @@ type SearchPageFetchResult =
     }
   | "not_found";
 
-async function fetchSearchPage(
+const fetchSearchPage = async (
   params: Omit<SearchMoviesParams, "page">,
   omdbPage: number,
-): Promise<SearchPageFetchResult> {
+): Promise<SearchPageFetchResult> => {
   const queryParams: Record<string, string> = {
     s: params.query.trim(),
     page: String(omdbPage),
@@ -135,7 +135,7 @@ async function fetchSearchPage(
   };
 }
 
-function getOmdbPageRange(uiPage: number) {
+const getOmdbPageRange = (uiPage: number) => {
   const startIndex = (uiPage - 1) * RESULTS_PER_PAGE;
   const endIndex = startIndex + RESULTS_PER_PAGE;
   const firstOmdbPage = Math.floor(startIndex / OMDB_API_PAGE_SIZE) + 1;
@@ -151,7 +151,7 @@ function getOmdbPageRange(uiPage: number) {
   };
 }
 
-function dedupeSearchItems(items: OmdbSearchItem[]): OmdbSearchItem[] {
+const dedupeSearchItems = (items: OmdbSearchItem[]): OmdbSearchItem[] => {
   const seen = new Set<string>();
 
   return items.filter((item) => {
@@ -164,9 +164,9 @@ function dedupeSearchItems(items: OmdbSearchItem[]): OmdbSearchItem[] {
   });
 }
 
-async function searchMoviesByRating(
+const searchMoviesByRating = async (
   params: SearchMoviesParams,
-): Promise<SearchMoviesResult> {
+): Promise<SearchMoviesResult> => {
   const page = params.page ?? 1;
   const firstPage = await fetchSearchPage(params, 1);
 
@@ -214,9 +214,9 @@ async function searchMoviesByRating(
   };
 }
 
-export async function searchMovies(
+export const searchMovies = async (
   params: SearchMoviesParams,
-): Promise<SearchMoviesResult> {
+): Promise<SearchMoviesResult> => {
   if (params.sort === "rating") {
     return searchMoviesByRating(params);
   }
@@ -276,9 +276,9 @@ const getMovieRating = cache(async (imdbId: string): Promise<string> => {
   }
 });
 
-export async function enrichSearchItemsWithRatings(
+export const enrichSearchItemsWithRatings = async (
   items: OmdbSearchItem[],
-): Promise<OmdbSearchItem[]> {
+): Promise<OmdbSearchItem[]> => {
   const ratings = await Promise.all(
     items.map((item) => getMovieRating(item.imdbID)),
   );
@@ -289,7 +289,7 @@ export async function enrichSearchItemsWithRatings(
   }));
 }
 
-export async function getMovieDetails(imdbId: string) {
+export const getMovieDetails = async (imdbId: string) => {
   const data = await fetchOmdb<OmdbDetailsResponse>({
     i: imdbId,
     plot: "full",

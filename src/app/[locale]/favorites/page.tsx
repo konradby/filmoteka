@@ -3,11 +3,11 @@ import type { Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { buildPageMetadata } from "@/lib/seo/site";
 
-export default async function FavoritesPage({
+const FavoritesPage = async ({
   params,
 }: {
   params: Promise<{ locale: string }>;
-}) {
+}) => {
   const { locale: localeParam } = await params;
   const locale = localeParam as Locale;
   const dictionary = getDictionary(locale);
@@ -26,13 +26,15 @@ export default async function FavoritesPage({
       <FavoritesList locale={locale} dictionary={dictionary} />
     </main>
   );
-}
+};
 
-export async function generateMetadata({
+export default FavoritesPage;
+
+export const generateMetadata = async ({
   params,
 }: {
   params: Promise<{ locale: string }>;
-}) {
+}) => {
   const { locale: localeParam } = await params;
   const locale = localeParam as Locale;
   const dictionary = getDictionary(locale);

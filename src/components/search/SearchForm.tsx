@@ -31,7 +31,7 @@ interface SearchFormProps {
 
 const DEBOUNCE_MS = 500;
 
-export function SearchForm({
+export const SearchForm = ({
   locale,
   dictionary,
   initialQuery = "",
@@ -39,7 +39,7 @@ export function SearchForm({
   initialType = "",
   currentSort = DEFAULT_SEARCH_SORT,
   onQueryCleared,
-}: SearchFormProps) {
+}: SearchFormProps) => {
   const router = useRouter();
   const statusId = useId();
   const [query, setQuery] = useState(initialQuery);
@@ -119,18 +119,18 @@ export function SearchForm({
     };
   }, [query, year, type, scheduleSearch]);
 
-  function searchImmediately(
+  const searchImmediately = (
     nextQuery: string,
     nextYear: string,
     nextType: string,
-  ) {
+  ) => {
     if (debounceRef.current) {
       clearTimeout(debounceRef.current);
     }
     navigate(nextQuery, nextYear, nextType);
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     searchImmediately(query, year, type);
   }

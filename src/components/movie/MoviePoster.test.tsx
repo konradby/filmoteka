@@ -19,7 +19,9 @@ describe("MoviePoster", () => {
       </div>,
     );
 
-    expect(screen.getByText("No poster available")).toBeInTheDocument();
+    expect(
+      screen.getByRole("img", { name: "No poster available" }),
+    ).toHaveAttribute("src", expect.stringContaining("poster-placeholder.svg"));
   });
 
   it("shows placeholder when image fails to load", async () => {
@@ -40,6 +42,8 @@ describe("MoviePoster", () => {
       fireEvent.error(image);
     });
 
-    expect(screen.getByText("No poster available")).toBeInTheDocument();
+    expect(
+      screen.getByRole("img", { name: "No poster available" }),
+    ).toHaveAttribute("src", expect.stringContaining("poster-placeholder.svg"));
   });
 });

@@ -4,11 +4,11 @@ import { locales, type Locale } from "@/i18n/config";
 import { buildSearchUrl } from "@/lib/search/build-search-url";
 import { parseSearchSort } from "@/lib/search/sort";
 
-export function getSiteUrl(): string {
+export const getSiteUrl = (): string => {
   return process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
-}
+};
 
-export function getLocalizedPath(locale: Locale, path = ""): string {
+export const getLocalizedPath = (locale: Locale, path = ""): string => {
   if (!path) {
     return `/${locale}`;
   }
@@ -16,14 +16,14 @@ export function getLocalizedPath(locale: Locale, path = ""): string {
   return path.startsWith("/") ? `/${locale}${path}` : `/${locale}/${path}`;
 }
 
-export function getLocalizedUrl(locale: Locale, path = ""): string {
+export const getLocalizedUrl = (locale: Locale, path = ""): string => {
   return `${getSiteUrl()}${getLocalizedPath(locale, path)}`;
-}
+};
 
-export function getSearchUrl(
+export const getSearchUrl = (
   locale: Locale,
   params: Record<string, string | undefined>,
-): string {
+): string => {
   return `${getSiteUrl()}${buildSearchUrl(locale, {
     q: params.q ?? "",
     year: params.year,
@@ -33,13 +33,13 @@ export function getSearchUrl(
   })}`;
 }
 
-export function getLanguageAlternates(path = ""): Record<string, string> {
+export const getLanguageAlternates = (path = ""): Record<string, string> => {
   return Object.fromEntries(
     locales.map((locale) => [locale, getLocalizedUrl(locale, path)]),
   );
-}
+};
 
-export function buildPageMetadata({
+export const buildPageMetadata = ({
   locale,
   title,
   description,
@@ -55,7 +55,7 @@ export function buildPageMetadata({
   canonicalUrl?: string;
   openGraph?: Metadata["openGraph"];
   twitter?: Metadata["twitter"];
-}): Metadata {
+}): Metadata => {
   const url = canonicalUrl ?? getLocalizedUrl(locale, path);
 
   return {

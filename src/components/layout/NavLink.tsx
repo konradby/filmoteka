@@ -13,12 +13,12 @@ interface NavLinkProps {
   matchPath?: "search" | "favorites";
 }
 
-export function NavLink({
+export const NavLink = ({
   href,
   locale,
   children,
   matchPath,
-}: NavLinkProps) {
+}: NavLinkProps) => {
   const pathname = usePathname();
   const isActive =
     matchPath === "favorites"

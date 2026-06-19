@@ -18,9 +18,9 @@ interface MoviePageProps {
   params: Promise<{ locale: string; imdbId: string }>;
 }
 
-export async function generateMetadata({
+export const generateMetadata = async ({
   params,
-}: MoviePageProps): Promise<Metadata> {
+}: MoviePageProps): Promise<Metadata> => {
   const { locale: localeParam, imdbId } = await params;
   const locale = localeParam as Locale;
   const dictionary = getDictionary(locale);
@@ -63,7 +63,7 @@ export async function generateMetadata({
   }
 }
 
-export default async function MoviePage({ params }: MoviePageProps) {
+const MoviePage = async ({ params }: MoviePageProps) => {
   const { locale: localeParam, imdbId } = await params;
   const locale = localeParam as Locale;
   const dictionary = getDictionary(locale);
@@ -92,4 +92,6 @@ export default async function MoviePage({ params }: MoviePageProps) {
       <MovieDetails movie={movie} locale={locale} dictionary={dictionary} />
     </main>
   );
-}
+};
+
+export default MoviePage;

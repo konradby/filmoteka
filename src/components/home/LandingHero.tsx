@@ -9,7 +9,7 @@ interface LandingHeroProps {
 
 const featureKeys = ["titles", "details", "favorites"] as const;
 
-export function LandingHero({ dictionary, children }: LandingHeroProps) {
+export const LandingHero = ({ dictionary, children }: LandingHeroProps) => {
   return (
     <section className="relative isolate min-h-[calc(100vh-4.5rem)] overflow-hidden">
       <Image

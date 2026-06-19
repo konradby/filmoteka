@@ -31,6 +31,7 @@
     "submit": "Search",
     "emptyPrompt": "Enter a search term to see results.",
     "noResults": "No results match your criteria.",
+    "browseResults": "Browse titles",
     "resultsFor": "Results for “{query}”",
     "resultsCount": "Found {count} results",
     "loading": "Searching…"

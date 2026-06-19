@@ -9,15 +9,15 @@ import { locales, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { buildPageMetadata } from "@/lib/seo/site";
 
-export function generateStaticParams() {
+export const generateStaticParams = () => {
   return locales.map((locale) => ({ locale }));
-}
+};
 
-export async function generateMetadata({
+export const generateMetadata = async ({
   params,
 }: {
   params: Promise<{ locale: string }>;
-}): Promise<Metadata> {
+}): Promise<Metadata> => {
   const { locale: localeParam } = await params;
   const locale = localeParam as Locale;
   const dictionary = getDictionary(locale);
@@ -29,13 +29,13 @@ export async function generateMetadata({
   });
 }
 
-export default async function LocaleLayout({
+const LocaleLayout = async ({
   children,
   params,
 }: {
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
-}) {
+}) => {
   const { locale: localeParam } = await params;
 
   if (!locales.includes(localeParam as Locale)) {
@@ -60,4 +60,6 @@ export default async function LocaleLayout({
       </AppProviders>
     </>
   );
-}
+};
+
+export default LocaleLayout;

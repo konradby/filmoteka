@@ -18,7 +18,7 @@ interface MovieCardProps {
   dictionary: Dictionary;
 }
 
-export function MovieCard({ movie, locale, dictionary }: MovieCardProps) {
+export const MovieCard = ({ movie, locale, dictionary }: MovieCardProps) => {
   const rating = parseImdbRating(movie.imdbRating);
   const detailsLabel = formatMessage(dictionary.a11y.openMovieDetails, {
     title: movie.Title,

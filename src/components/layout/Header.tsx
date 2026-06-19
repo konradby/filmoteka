@@ -11,7 +11,7 @@ interface HeaderProps {
   dictionary: Dictionary;
 }
 
-export function Header({ locale, dictionary }: HeaderProps) {
+export const Header = ({ locale, dictionary }: HeaderProps) => {
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-3 px-4 py-4 sm:px-6">

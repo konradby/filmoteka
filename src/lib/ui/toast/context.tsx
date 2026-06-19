@@ -27,7 +27,7 @@ interface ToastContextValue {
 const ToastContext = createContext<ToastContextValue | null>(null);
 const TOAST_DURATION_MS = 4000;
 
-function ToastContextProvider({ children }: { children: ReactNode }) {
+const ToastContextProvider = ({ children }: { children: ReactNode }) => {
   const [toasts, setToasts] = useState<ToastItem[]>([]);
   const timeoutsRef = useRef<Map<string, ReturnType<typeof setTimeout>>>(
     new Map(),
@@ -75,13 +75,13 @@ function ToastContextProvider({ children }: { children: ReactNode }) {
   );
 }
 
-export function ToastProvider({
+export const ToastProvider = ({
   children,
   dismissLabel,
 }: {
   children: ReactNode;
   dismissLabel: string;
-}) {
+}) => {
   return (
     <ToastContextProvider>
       {children}
@@ -90,7 +90,7 @@ export function ToastProvider({
   );
 }
 
-export function useToast(): ToastContextValue {
+export const useToast = (): ToastContextValue => {
   const context = useContext(ToastContext);
 
   if (!context) {

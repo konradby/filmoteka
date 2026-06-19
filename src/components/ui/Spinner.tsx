@@ -10,11 +10,11 @@ const sizeClasses = {
   lg: "h-8 w-8 border-4",
 } as const;
 
-export function Spinner({
+export const Spinner = ({
   label = "Loading",
   size = "md",
   className = "",
-}: SpinnerProps) {
+}: SpinnerProps) => {
   return (
     <span
       role="status"

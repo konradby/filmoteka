@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 600" fill="none" aria-hidden="true">
+  <defs>
+    <linearGradient id="poster-bg" x1="200" y1="0" x2="200" y2="600" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2a2a2a"/>
+      <stop offset="1" stop-color="#141414"/>
+    </linearGradient>
+    <linearGradient id="poster-glow" x1="200" y1="180" x2="200" y2="420" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#f5c518" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#f5c518" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="600" fill="url(#poster-bg)"/>
+  <rect x="24" y="24" width="352" height="552" rx="8" stroke="#333333" stroke-width="2"/>
+  <ellipse cx="200" cy="300" rx="130" ry="130" fill="url(#poster-glow)"/>
+  <g transform="translate(200 300)">
+    <g transform="translate(-72 -88)">
+      <rect x="0" y="0" width="144" height="176" rx="12" fill="#1f1f1f" stroke="#f5c518" stroke-width="3"/>
+      <rect x="18" y="0" width="20" height="176" fill="#f5c518" opacity="0.9"/>
+      <rect x="106" y="0" width="20" height="176" fill="#f5c518" opacity="0.9"/>
+      <circle cx="28" cy="22" r="6" fill="#141414"/>
+      <circle cx="28" cy="54" r="6" fill="#141414"/>
+      <circle cx="28" cy="86" r="6" fill="#141414"/>
+      <circle cx="28" cy="118" r="6" fill="#141414"/>
+      <circle cx="28" cy="150" r="6" fill="#141414"/>
+      <circle cx="116" cy="22" r="6" fill="#141414"/>
+      <circle cx="116" cy="54" r="6" fill="#141414"/>
+      <circle cx="116" cy="86" r="6" fill="#141414"/>
+      <circle cx="116" cy="118" r="6" fill="#141414"/>
+      <circle cx="116" cy="150" r="6" fill="#141414"/>
+      <rect x="46" y="28" width="52" height="36" rx="4" fill="#f5c518" opacity="0.22"/>
+      <rect x="46" y="76" width="52" height="36" rx="4" fill="#f5c518" opacity="0.22"/>
+      <rect x="46" y="124" width="52" height="36" rx="4" fill="#f5c518" opacity="0.22"/>
+    </g>
+  </g>
+</svg>

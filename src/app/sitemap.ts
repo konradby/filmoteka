@@ -3,7 +3,7 @@ import type { MetadataRoute } from "next";
 import { locales } from "@/i18n/config";
 import { getSiteUrl } from "@/lib/seo/site";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+const sitemap = (): MetadataRoute.Sitemap => {
   const baseUrl = getSiteUrl();
 
   return locales.flatMap((locale) => [
@@ -41,4 +41,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       },
     },
   ]);
-}
+};
+
+export default sitemap;

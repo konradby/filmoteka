@@ -18,7 +18,7 @@ interface SearchViewProps {
   results: ReactNode;
 }
 
-export function SearchView({
+export const SearchView = ({
   locale,
   dictionary,
   initialQuery,
@@ -26,7 +26,7 @@ export function SearchView({
   initialType,
   currentSort,
   results,
-}: SearchViewProps) {
+}: SearchViewProps) => {
   const [queryCleared, setQueryCleared] = useState(false);
 
   useEffect(() => {

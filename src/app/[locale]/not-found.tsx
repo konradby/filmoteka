@@ -5,11 +5,11 @@ import { getDictionary } from "@/i18n/get-dictionary";
 import { getSearchBasePath } from "@/lib/search/build-search-url";
 import { interactiveLinkClassName } from "@/lib/ui/classes";
 
-export default async function NotFound({
+const NotFound = async ({
   params,
 }: {
   params?: Promise<{ locale?: string }>;
-}) {
+}) => {
   const resolvedParams = params ? await params : undefined;
   const locale = (resolvedParams?.locale ?? defaultLocale) as Locale;
   const dictionary = getDictionary(locale);
@@ -26,4 +26,6 @@ export default async function NotFound({
       </Link>
     </main>
   );
-}
+};
+
+export default NotFound;

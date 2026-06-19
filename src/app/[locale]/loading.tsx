@@ -2,7 +2,7 @@ import { SearchResultsSkeleton } from "@/components/search/SearchResultsSkeleton
 import { defaultLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 
-export default function HomeLoading() {
+const HomeLoading = () => {
   const dictionary = getDictionary(defaultLocale);
 
   return (
@@ -15,4 +15,6 @@ export default function HomeLoading() {
       <SearchResultsSkeleton dictionary={dictionary} />
     </main>
   );
-}
+};
+
+export default HomeLoading;

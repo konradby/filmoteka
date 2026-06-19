@@ -1,4 +1,4 @@
-export function parseImdbRating(value: string | undefined): number | null {
+export const parseImdbRating = (value: string | undefined): number | null => {
   if (!value) {
     return null;
   }
@@ -12,9 +12,9 @@ export function parseImdbRating(value: string | undefined): number | null {
   return Math.min(rating, 10);
 }
 
-export function getStarFillStates(
+export const getStarFillStates = (
   rating10: number,
-): Array<"full" | "half" | "empty"> {
+): Array<"full" | "half" | "empty"> => {
   const rating5 = (rating10 / 10) * 5;
 
   return Array.from({ length: 5 }, (_, index) => {

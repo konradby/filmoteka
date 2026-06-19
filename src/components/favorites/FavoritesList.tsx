@@ -18,11 +18,11 @@ interface FavoritesListProps {
   dictionary: Dictionary;
 }
 
-export function FavoritesList({ locale, dictionary }: FavoritesListProps) {
+export const FavoritesList = ({ locale, dictionary }: FavoritesListProps) => {
   const { favorites, isHydrated, remove } = useFavorites();
   const showFavoriteToast = useFavoriteToast(dictionary);
 
-  function handleRemove(imdbId: string, title: string) {
+  const handleRemove = (imdbId: string, title: string) => {
     const result = remove(imdbId);
     showFavoriteToast(result, title);
   }

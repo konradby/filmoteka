@@ -13,12 +13,12 @@ interface PaginationLinkProps {
   children: React.ReactNode;
 }
 
-export function PaginationLink({
+export const PaginationLink = ({
   href,
   dictionary,
   rel,
   children,
-}: PaginationLinkProps) {
+}: PaginationLinkProps) => {
   return (
     <Link
       href={href}
@@ -32,13 +32,13 @@ export function PaginationLink({
   );
 }
 
-function PaginationLinkLabel({
+const PaginationLinkLabel = ({
   dictionary,
   children,
 }: {
   dictionary: Dictionary;
   children: React.ReactNode;
-}) {
+}) => {
   const { pending } = useLinkStatus();
 
   if (pending) {

@@ -1,14 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { defaultLocale, isValidLocale, locales, type Locale } from "@/i18n/config";
 
-function getPreferredLocale(request: NextRequest): Locale {
+const getPreferredLocale = (request: NextRequest): Locale => {
   const acceptLanguage = request.headers.get("accept-language") ?? "";
   if (acceptLanguage.toLowerCase().includes("pl")) return "pl";
   if (acceptLanguage.toLowerCase().includes("en")) return "en";
   return defaultLocale;
 }
 
-export function middleware(request: NextRequest) {
+export const middleware = (request: NextRequest) => {
   const { pathname } = request.nextUrl;
 
   const pathnameHasLocale = locales.some(

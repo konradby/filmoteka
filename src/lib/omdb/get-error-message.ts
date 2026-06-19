@@ -7,7 +7,7 @@ import {
 } from "@/lib/omdb/errors";
 import type { Dictionary } from "@/i18n/get-dictionary";
 
-export function getErrorMessage(error: unknown, dictionary: Dictionary): string {
+export const getErrorMessage = (error: unknown, dictionary: Dictionary): string => {
   if (error instanceof OmdbConfigError) {
     return dictionary.errors.config;
   }

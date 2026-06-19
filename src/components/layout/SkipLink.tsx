@@ -7,7 +7,7 @@ interface SkipLinkProps {
   dictionary: Dictionary;
 }
 
-export function SkipLink({ locale, dictionary }: SkipLinkProps) {
+export const SkipLink = ({ locale, dictionary }: SkipLinkProps) => {
   return (
     <a
       href={`#main-content-${locale}`}

@@ -10,7 +10,7 @@ interface MovieListProps {
   dictionary: Dictionary;
 }
 
-export function MovieList({ movies, locale, dictionary }: MovieListProps) {
+export const MovieList = ({ movies, locale, dictionary }: MovieListProps) => {
   return (
     <ul
       aria-label={dictionary.a11y.searchResults}

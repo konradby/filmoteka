@@ -11,7 +11,7 @@ interface StarRatingProps {
   showValue?: boolean;
 }
 
-function StarIcon({ state }: { state: "full" | "half" | "empty" }) {
+const StarIcon = ({ state }: { state: "full" | "half" | "empty" }) => {
   return (
     <span className="relative inline-block h-3.5 w-3.5" aria-hidden="true">
       <svg
@@ -35,12 +35,12 @@ function StarIcon({ state }: { state: "full" | "half" | "empty" }) {
   );
 }
 
-export function StarRating({
+export const StarRating = ({
   imdbRating,
   dictionary,
   className = "",
   showValue = true,
-}: StarRatingProps) {
+}: StarRatingProps) => {
   const rating = parseImdbRating(imdbRating);
 
   if (rating === null) {

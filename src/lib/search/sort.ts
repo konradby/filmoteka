@@ -6,11 +6,11 @@ export type SearchSort = (typeof SEARCH_SORT_OPTIONS)[number];
 
 export const DEFAULT_SEARCH_SORT: SearchSort = "relevance";
 
-export function isSearchSort(value: string): value is SearchSort {
+export const isSearchSort = (value: string): value is SearchSort => {
   return SEARCH_SORT_OPTIONS.includes(value as SearchSort);
-}
+};
 
-export function parseSearchSort(value: string | undefined): SearchSort {
+export const parseSearchSort = (value: string | undefined): SearchSort => {
   if (value && isSearchSort(value)) {
     return value;
   }
@@ -18,7 +18,7 @@ export function parseSearchSort(value: string | undefined): SearchSort {
   return DEFAULT_SEARCH_SORT;
 }
 
-export function sortMoviesByRating(items: OmdbSearchItem[]): OmdbSearchItem[] {
+export const sortMoviesByRating = (items: OmdbSearchItem[]): OmdbSearchItem[] => {
   return [...items].sort((first, second) => {
     const firstRating = parseImdbRating(first.imdbRating) ?? -1;
     const secondRating = parseImdbRating(second.imdbRating) ?? -1;

@@ -7,14 +7,14 @@ const dictionaries = { pl, en } as const;
 
 export type Dictionary = (typeof dictionaries)["pl"];
 
-export function getDictionary(locale: Locale): Dictionary {
+export const getDictionary = (locale: Locale): Dictionary => {
   return dictionaries[locale];
-}
+};
 
-export function formatMessage(
+export const formatMessage = (
   template: string,
   values: Record<string, string | number>,
-): string {
+): string => {
   return Object.entries(values).reduce(
     (result, [key, value]) => result.replace(`{${key}}`, String(value)),
     template,

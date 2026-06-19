@@ -15,7 +15,7 @@ interface PaginationProps {
   sort?: SearchSort;
 }
 
-export function Pagination({
+export const Pagination = ({
   locale,
   dictionary,
   currentPage,
@@ -24,7 +24,7 @@ export function Pagination({
   year,
   type,
   sort,
-}: PaginationProps) {
+}: PaginationProps) => {
   if (totalPages <= 1) return null;
 
   const previousPage = Math.max(1, currentPage - 1);

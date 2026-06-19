@@ -8,6 +8,10 @@ import { formatMessage, type Dictionary } from "@/i18n/get-dictionary";
 import { searchMovies, enrichSearchItemsWithRatings } from "@/lib/omdb/client";
 import { isOmdbMediaType } from "@/lib/omdb/constants";
 import { getErrorMessage } from "@/lib/omdb/get-error-message";
+import {
+  getSearchFetchQuery,
+  hasUserSearchQuery,
+} from "@/lib/search/defaults";
 import { parseSearchSort } from "@/lib/search/sort";
 
 interface SearchResultsProps {
@@ -22,12 +26,14 @@ interface SearchResultsProps {
   };
 }
 
-export async function SearchResults({
+export const SearchResults = async ({
   locale,
   dictionary,
   searchParams,
-}: SearchResultsProps) {
-  const query = searchParams.q?.trim() ?? "";
+}: SearchResultsProps) => {
+  const displayQuery = searchParams.q?.trim() ?? "";
+  const fetchQuery = getSearchFetchQuery(searchParams.q);
+  const isUserSearch = hasUserSearchQuery(searchParams.q);
   const year = searchParams.year?.trim() ?? "";
   const typeParam = searchParams.type?.trim() ?? "";
   const type = isOmdbMediaType(typeParam) ? typeParam : undefined;
@@ -37,23 +43,12 @@ export async function SearchResults({
     Number.parseInt(searchParams.page ?? "1", 10) || 1,
   );
 
-  if (!query) {
-    return (
-      <section className="mt-10" aria-labelledby="search-results-heading">
-        <h2 id="search-results-heading" className="sr-only">
-          {dictionary.a11y.searchResults}
-        </h2>
-        <EmptyState message={dictionary.search.emptyPrompt} />
-      </section>
-    );
-  }
-
   let searchResult = null;
   let searchError: string | null = null;
 
   try {
     const result = await searchMovies({
-      query,
+      query: fetchQuery,
       page,
       year: year || undefined,
       type,
@@ -100,7 +95,11 @@ export async function SearchResults({
                 id="search-results-heading"
                 className="text-xl font-semibold text-foreground"
               >
-                {formatMessage(dictionary.search.resultsFor, { query })}
+                {isUserSearch
+                  ? formatMessage(dictionary.search.resultsFor, {
+                      query: displayQuery,
+                    })
+                  : dictionary.search.browseResults}
               </h2>
               <p className="mt-1 text-sm text-muted">
                 {formatMessage(dictionary.search.resultsCount, {
@@ -111,7 +110,7 @@ export async function SearchResults({
             <SearchResultsSort
               locale={locale}
               dictionary={dictionary}
-              query={query}
+              query={displayQuery}
               year={year || undefined}
               type={type}
               currentSort={sort}
@@ -127,7 +126,7 @@ export async function SearchResults({
             dictionary={dictionary}
             currentPage={searchResult.page}
             totalPages={searchResult.totalPages}
-            query={query}
+            query={displayQuery}
             year={year || undefined}
             type={type}
             sort={sort}

@@ -17,17 +17,17 @@ interface SearchResultsSortProps {
   currentSort: SearchSort;
 }
 
-export function SearchResultsSort({
+export const SearchResultsSort = ({
   locale,
   dictionary,
   query,
   year,
   type,
   currentSort,
-}: SearchResultsSortProps) {
+}: SearchResultsSortProps) => {
   const router = useRouter();
 
-  function handleSortChange(event: React.ChangeEvent<HTMLSelectElement>) {
+  const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const nextSort = event.target.value as SearchSort;
 
     router.push(

@@ -2,7 +2,7 @@ interface EmptyStateProps {
   message: string;
 }
 
-export function EmptyState({ message }: EmptyStateProps) {
+export const EmptyState = ({ message }: EmptyStateProps) => {
   return (
     <p
       aria-live="polite"

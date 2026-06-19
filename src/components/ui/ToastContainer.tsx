@@ -6,7 +6,7 @@ interface ToastContainerProps {
   dismissLabel: string;
 }
 
-export function ToastContainer({ dismissLabel }: ToastContainerProps) {
+export const ToastContainer = ({ dismissLabel }: ToastContainerProps) => {
   const { toasts, dismissToast } = useToast();
 
   if (toasts.length === 0) {

@@ -1,10 +1,10 @@
 import type { Dictionary } from "@/i18n/get-dictionary";
 
-export function MovieDetailsSkeleton({
+export const MovieDetailsSkeleton = ({
   dictionary,
 }: {
   dictionary: Dictionary;
-}) {
+}) => {
   return (
     <div
       role="status"

@@ -15,11 +15,11 @@ interface FavoriteButtonProps {
 
 const baseClassName = `${interactiveButtonClassName} inline-flex w-full items-center justify-center rounded-lg border border-border bg-surface-elevated px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:border-accent hover:text-accent disabled:cursor-not-allowed disabled:opacity-50`;
 
-export function FavoriteButton({
+export const FavoriteButton = ({
   movie,
   dictionary,
   variant = "default",
-}: FavoriteButtonProps) {
+}: FavoriteButtonProps) => {
   const { isHydrated, isFavorite, toggle } = useFavorites();
   const showFavoriteToast = useFavoriteToast(dictionary);
   const active = isHydrated && isFavorite(movie.imdbID);
@@ -32,7 +32,7 @@ export function FavoriteButton({
     title: movie.Title,
   });
 
-  function handleClick() {
+  const handleClick = () => {
     const result = toggle(movie);
     showFavoriteToast(result, movie.Title);
   }

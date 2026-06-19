@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 
-import { isValidPosterUrl } from "@/lib/omdb/constants";
+import { isValidPosterUrl, POSTER_PLACEHOLDER_SRC } from "@/lib/omdb/constants";
 
 interface MoviePosterProps {
   src: string;
@@ -15,7 +15,7 @@ interface MoviePosterProps {
   imageClassName?: string;
 }
 
-export function MoviePoster({
+export const MoviePoster = ({
   src,
   alt,
   sizes,
@@ -23,15 +23,21 @@ export function MoviePoster({
   priority = false,
   decorative = false,
   imageClassName = "object-cover",
-}: MoviePosterProps) {
+}: MoviePosterProps) => {
   const [failed, setFailed] = useState(false);
   const canShowImage = isValidPosterUrl(src) && !failed;
 
   if (!canShowImage) {
     return (
-      <div className="absolute inset-0 flex items-center justify-center bg-surface-elevated px-4 text-center text-sm text-muted">
-        {placeholderLabel}
-      </div>
+      <Image
+        src={POSTER_PLACEHOLDER_SRC}
+        alt={decorative ? "" : placeholderLabel}
+        aria-hidden={decorative ? true : undefined}
+        fill
+        sizes={sizes}
+        priority={priority}
+        className={`${imageClassName} bg-surface-elevated`}
+      />
     );
   }
 

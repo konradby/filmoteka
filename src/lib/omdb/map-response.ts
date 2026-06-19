@@ -6,7 +6,7 @@ import type {
 
 const OMDB_MISSING = "N/A";
 
-export function normalizeOmdbField(value: unknown): string {
+export const normalizeOmdbField = (value: unknown): string => {
   if (value == null) {
     return "";
   }
@@ -20,7 +20,7 @@ export function normalizeOmdbField(value: unknown): string {
   return normalized;
 }
 
-export function normalizeOmdbPoster(value: unknown): string {
+export const normalizeOmdbPoster = (value: unknown): string => {
   const poster = normalizeOmdbField(value);
 
   if (!poster.startsWith("http")) {
@@ -30,7 +30,7 @@ export function normalizeOmdbPoster(value: unknown): string {
   return poster;
 }
 
-function normalizeRatings(value: unknown): OmdbRating[] {
+const normalizeRatings = (value: unknown): OmdbRating[] => {
   if (!Array.isArray(value)) {
     return [];
   }
@@ -43,7 +43,7 @@ function normalizeRatings(value: unknown): OmdbRating[] {
     .filter((rating) => rating.Source && rating.Value);
 }
 
-export function mapSearchItem(raw: Partial<OmdbSearchItem>): OmdbSearchItem {
+export const mapSearchItem = (raw: Partial<OmdbSearchItem>): OmdbSearchItem => {
   return {
     Title: normalizeOmdbField(raw.Title),
     Year: normalizeOmdbField(raw.Year),
@@ -54,7 +54,7 @@ export function mapSearchItem(raw: Partial<OmdbSearchItem>): OmdbSearchItem {
   };
 }
 
-export function mapMovieDetails(raw: Partial<OmdbMovieDetails>): OmdbMovieDetails {
+export const mapMovieDetails = (raw: Partial<OmdbMovieDetails>): OmdbMovieDetails => {
   return {
     Title: normalizeOmdbField(raw.Title),
     Year: normalizeOmdbField(raw.Year),

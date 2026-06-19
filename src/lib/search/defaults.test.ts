@@ -1,23 +1,23 @@
 import { describe, expect, it } from "vitest";
 
 import {
-  DEFAULT_SEARCH_QUERY,
-  getEffectiveSearchQuery,
-  shouldApplyDefaultSearchQuery,
+  getSearchFetchQuery,
+  hasUserSearchQuery,
+  INITIAL_BROWSE_QUERY,
 } from "@/lib/search/defaults";
 
 describe("search defaults", () => {
-  it("uses titanic as the default query", () => {
-    expect(DEFAULT_SEARCH_QUERY).toBe("titanic");
-    expect(getEffectiveSearchQuery(undefined)).toBe("titanic");
-    expect(getEffectiveSearchQuery("   ")).toBe("titanic");
-    expect(getEffectiveSearchQuery("batman")).toBe("batman");
+  it("uses an internal browse query when the user has not searched", () => {
+    expect(INITIAL_BROWSE_QUERY).toBe("movie");
+    expect(getSearchFetchQuery(undefined)).toBe("movie");
+    expect(getSearchFetchQuery("   ")).toBe("movie");
+    expect(getSearchFetchQuery("batman")).toBe("batman");
   });
 
-  it("detects when default query should be applied", () => {
-    expect(shouldApplyDefaultSearchQuery(undefined)).toBe(true);
-    expect(shouldApplyDefaultSearchQuery("")).toBe(false);
-    expect(shouldApplyDefaultSearchQuery("   ")).toBe(false);
-    expect(shouldApplyDefaultSearchQuery("batman")).toBe(false);
+  it("detects when the user entered a search phrase", () => {
+    expect(hasUserSearchQuery(undefined)).toBe(false);
+    expect(hasUserSearchQuery("")).toBe(false);
+    expect(hasUserSearchQuery("   ")).toBe(false);
+    expect(hasUserSearchQuery("batman")).toBe(true);
   });
 });

@@ -3,7 +3,7 @@ import { normalizeOmdbField, normalizeOmdbPoster } from "@/lib/omdb/map-response
 
 export const FAVORITES_STORAGE_KEY = "imdb-movies-favorites";
 
-function mapFavoriteMovie(raw: Partial<FavoriteMovie>): FavoriteMovie | null {
+const mapFavoriteMovie = (raw: Partial<FavoriteMovie>): FavoriteMovie | null => {
   const imdbID = normalizeOmdbField(raw.imdbID);
 
   if (!imdbID) {
@@ -19,7 +19,7 @@ function mapFavoriteMovie(raw: Partial<FavoriteMovie>): FavoriteMovie | null {
   };
 }
 
-export function getFavorites(): FavoriteMovie[] {
+export const getFavorites = (): FavoriteMovie[] => {
   if (typeof window === "undefined") return [];
 
   try {
@@ -38,7 +38,7 @@ export function getFavorites(): FavoriteMovie[] {
   }
 }
 
-export function saveFavorites(favorites: FavoriteMovie[]): void {
+export const saveFavorites = (favorites: FavoriteMovie[]): void => {
   try {
     localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favorites));
   } catch {
@@ -46,7 +46,7 @@ export function saveFavorites(favorites: FavoriteMovie[]): void {
   }
 }
 
-export function addFavorite(movie: FavoriteMovie): FavoriteMovie[] {
+export const addFavorite = (movie: FavoriteMovie): FavoriteMovie[] => {
   const favorites = getFavorites();
   const normalizedMovie = mapFavoriteMovie(movie);
 
@@ -62,20 +62,20 @@ export function addFavorite(movie: FavoriteMovie): FavoriteMovie[] {
   return updated;
 }
 
-export function removeFavorite(imdbId: string): FavoriteMovie[] {
+export const removeFavorite = (imdbId: string): FavoriteMovie[] => {
   const updated = getFavorites().filter((item) => item.imdbID !== imdbId);
   saveFavorites(updated);
   return updated;
 }
 
-export function isFavorite(imdbId: string): boolean {
+export const isFavorite = (imdbId: string): boolean => {
   return getFavorites().some((item) => item.imdbID === imdbId);
-}
+};
 
-export function toggleFavorite(movie: FavoriteMovie): {
+export const toggleFavorite = (movie: FavoriteMovie): {
   favorites: FavoriteMovie[];
   isFavorite: boolean;
-} {
+} => {
   if (isFavorite(movie.imdbID)) {
     const favorites = removeFavorite(movie.imdbID);
     return { favorites, isFavorite: false };

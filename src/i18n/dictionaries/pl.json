@@ -31,6 +31,7 @@
     "submit": "Szukaj",
     "emptyPrompt": "Wpisz frazę wyszukiwania, aby zobaczyć wyniki.",
     "noResults": "Brak wyników dla podanych kryteriów.",
+    "browseResults": "Przeglądaj tytuły",
     "resultsFor": "Wyniki dla „{query}”",
     "resultsCount": "Znaleziono {count} wyników",
     "loading": "Wyszukiwanie…"

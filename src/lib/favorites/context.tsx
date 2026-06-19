@@ -30,37 +30,37 @@ const listeners = new Set<() => void>();
 const SERVER_SNAPSHOT: FavoriteMovie[] = [];
 let favoritesCache: FavoriteMovie[] = [];
 
-function emitChange() {
+const emitChange = () => {
   listeners.forEach((listener) => listener());
-}
+};
 
-function subscribe(listener: () => void) {
+const subscribe = (listener: () => void) => {
   favoritesCache = getFavorites();
   listeners.add(listener);
   return () => listeners.delete(listener);
-}
+};
 
-function getSnapshot(): FavoriteMovie[] {
+const getSnapshot = (): FavoriteMovie[] => {
   return favoritesCache;
-}
+};
 
-function getServerSnapshot(): FavoriteMovie[] {
+const getServerSnapshot = (): FavoriteMovie[] => {
   return SERVER_SNAPSHOT;
-}
+};
 
-function subscribeHydration() {
+const subscribeHydration = () => {
   return () => {};
-}
+};
 
-function getHydratedSnapshot(): boolean {
+const getHydratedSnapshot = (): boolean => {
   return true;
-}
+};
 
-function getServerHydrationSnapshot(): boolean {
+const getServerHydrationSnapshot = (): boolean => {
   return false;
-}
+};
 
-function persistFavorites(next: FavoriteMovie[]): boolean {
+const persistFavorites = (next: FavoriteMovie[]): boolean => {
   try {
     saveFavorites(next);
     favoritesCache = next;
@@ -71,7 +71,7 @@ function persistFavorites(next: FavoriteMovie[]): boolean {
   }
 }
 
-export function FavoritesProvider({ children }: { children: ReactNode }) {
+export const FavoritesProvider = ({ children }: { children: ReactNode }) => {
   const favorites = useSyncExternalStore(
     subscribe,
     getSnapshot,
@@ -146,7 +146,7 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
   );
 }
 
-export function useFavorites(): FavoritesContextValue {
+export const useFavorites = (): FavoritesContextValue => {
   const context = useContext(FavoritesContext);
   if (!context) {
     throw new Error("useFavorites must be used within FavoritesProvider");
@@ -154,7 +154,7 @@ export function useFavorites(): FavoritesContextValue {
   return context;
 }
 
-export function resetFavoritesStoreForTests() {
+export const resetFavoritesStoreForTests = () => {
   favoritesCache = [];
   listeners.clear();
-}
+};

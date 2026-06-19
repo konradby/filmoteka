@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
 import { SearchView } from "@/components/search/SearchView";
@@ -8,11 +7,7 @@ import { SearchResultsSkeleton } from "@/components/search/SearchResultsSkeleton
 import type { Locale } from "@/i18n/config";
 import { formatMessage, getDictionary } from "@/i18n/get-dictionary";
 import { buildPageMetadata, getSearchUrl } from "@/lib/seo/site";
-import { buildSearchUrl } from "@/lib/search/build-search-url";
-import {
-  getEffectiveSearchQuery,
-  shouldApplyDefaultSearchQuery,
-} from "@/lib/search/defaults";
+import { hasUserSearchQuery } from "@/lib/search/defaults";
 import { parseSearchSort } from "@/lib/search/sort";
 
 export const dynamic = "force-dynamic";
@@ -28,23 +23,28 @@ interface SearchPageProps {
   }>;
 }
 
-export async function generateMetadata({
+export const generateMetadata = async ({
   params,
   searchParams,
-}: SearchPageProps): Promise<Metadata> {
+}: SearchPageProps): Promise<Metadata> => {
   const { locale: localeParam } = await params;
   const locale = localeParam as Locale;
   const dictionary = getDictionary(locale);
   const resolvedSearchParams = await searchParams;
-  const query = getEffectiveSearchQuery(resolvedSearchParams.q);
+  const displayQuery = resolvedSearchParams.q?.trim() ?? "";
+  const hasQuery = hasUserSearchQuery(resolvedSearchParams.q);
 
   return buildPageMetadata({
     locale,
-    title: formatMessage(dictionary.meta.searchTitle, { query }),
-    description: formatMessage(dictionary.search.resultsFor, { query }),
+    title: hasQuery
+      ? formatMessage(dictionary.meta.searchTitle, { query: displayQuery })
+      : `${dictionary.search.title} — Filmoteka`,
+    description: hasQuery
+      ? formatMessage(dictionary.search.resultsFor, { query: displayQuery })
+      : dictionary.meta.defaultDescription,
     path: "/search",
     canonicalUrl: getSearchUrl(locale, {
-      q: query,
+      q: displayQuery,
       year: resolvedSearchParams.year,
       type: resolvedSearchParams.type,
       page: resolvedSearchParams.page,
@@ -53,13 +53,13 @@ export async function generateMetadata({
   });
 }
 
-function getSearchKey(searchParams: {
+const getSearchKey = (searchParams: {
   q?: string;
   year?: string;
   type?: string;
   page?: string;
   sort?: string;
-}) {
+}) => {
   return [
     searchParams.q ?? "",
     searchParams.year ?? "",
@@ -67,28 +67,16 @@ function getSearchKey(searchParams: {
     searchParams.sort ?? "",
     searchParams.page ?? "1",
   ].join("|");
-}
+};
 
-export default async function SearchPage({
+const SearchPage = async ({
   params,
   searchParams,
-}: SearchPageProps) {
+}: SearchPageProps) => {
   const { locale: localeParam } = await params;
   const locale = localeParam as Locale;
   const dictionary = getDictionary(locale);
   const resolvedSearchParams = await searchParams;
-
-  if (shouldApplyDefaultSearchQuery(resolvedSearchParams.q)) {
-    redirect(
-      buildSearchUrl(locale, {
-        q: getEffectiveSearchQuery(resolvedSearchParams.q),
-        year: resolvedSearchParams.year,
-        type: resolvedSearchParams.type,
-        page: Number.parseInt(resolvedSearchParams.page ?? "1", 10) || 1,
-        sort: parseSearchSort(resolvedSearchParams.sort),
-      }),
-    );
-  }
 
   const query = resolvedSearchParams.q?.trim() ?? "";
   const year = resolvedSearchParams.year?.trim() ?? "";
@@ -129,4 +117,6 @@ export default async function SearchPage({
       />
     </main>
   );
-}
+};
+
+export default SearchPage;
