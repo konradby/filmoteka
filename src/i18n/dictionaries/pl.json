@@ -1,0 +1,77 @@
+{
+  "nav": {
+    "home": "Wyszukiwarka",
+    "favorites": "Ulubione",
+    "appName": "Filmoteka"
+  },
+  "search": {
+    "title": "Wyszukiwaj filmy i seriale",
+    "subtitle": "Przeszukaj bazę OMDb po tytule, roku premiery i typie produkcji.",
+    "placeholder": "Wpisz tytuł filmu lub serialu…",
+    "submit": "Szukaj",
+    "emptyPrompt": "Wpisz frazę wyszukiwania, aby zobaczyć wyniki.",
+    "noResults": "Brak wyników dla podanych kryteriów.",
+    "resultsFor": "Wyniki dla „{query}”",
+    "resultsCount": "Znaleziono {count} wyników"
+  },
+  "filters": {
+    "year": "Rok premiery",
+    "yearPlaceholder": "np. 2008",
+    "type": "Typ",
+    "typeAll": "Wszystkie",
+    "typeMovie": "Film",
+    "typeSeries": "Serial",
+    "typeEpisode": "Odcinek"
+  },
+  "pagination": {
+    "label": "Paginacja wyników",
+    "previous": "Poprzednia",
+    "next": "Następna",
+    "pageInfo": "Strona {current} z {total}"
+  },
+  "movie": {
+    "backToSearch": "Wróć do wyszukiwania",
+    "director": "Reżyseria",
+    "writers": "Scenariusz",
+    "actors": "Obsada",
+    "genre": "Gatunek",
+    "runtime": "Czas trwania",
+    "released": "Premiera",
+    "rated": "Kategoria wiekowa",
+    "language": "Język",
+    "country": "Kraj",
+    "awards": "Nagrody",
+    "ratings": "Oceny",
+    "boxOffice": "Box office",
+    "production": "Produkcja",
+    "noPoster": "Brak plakatu",
+    "addFavorite": "Dodaj do ulubionych",
+    "removeFavorite": "Usuń z ulubionych"
+  },
+  "favorites": {
+    "title": "Ulubione filmy",
+    "subtitle": "Twoja osobista lista zapisana lokalnie w przeglądarce.",
+    "empty": "Nie masz jeszcze ulubionych filmów.",
+    "remove": "Usuń",
+    "count": "{count} pozycji"
+  },
+  "errors": {
+    "generic": "Wystąpił błąd. Spróbuj ponownie.",
+    "notFound": "Nie znaleziono filmu.",
+    "network": "Błąd połączenia z API. Sprawdź połączenie internetowe.",
+    "config": "Brak klucza API. Skonfiguruj OMDB_API_KEY w pliku .env.local.",
+    "retry": "Spróbuj ponownie"
+  },
+  "a11y": {
+    "skipToContent": "Przejdź do treści",
+    "languageSwitcher": "Wybierz język",
+    "searchResults": "Wyniki wyszukiwania",
+    "favoriteToggle": "Przełącz ulubione dla {title}"
+  },
+  "meta": {
+    "defaultTitle": "Filmoteka — wyszukiwarka filmów OMDb",
+    "defaultDescription": "Wyszukuj filmy i seriale, przeglądaj szczegóły i zapisuj ulubione tytuły.",
+    "searchTitle": "Wyniki: {query} — Filmoteka",
+    "movieTitle": "{title} ({year}) — Filmoteka"
+  }
+}

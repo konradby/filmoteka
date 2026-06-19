@@ -1,36 +1,83 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# IMDB Movies — OMDb Search App
 
-## Getting Started
+Aplikacja do wyszukiwania filmów i seriali z wykorzystaniem [OMDb API](https://www.omdbapi.com/). Zbudowana jako zadanie rekrutacyjne z naciskiem na type safety, SSR, dostępność (WCAG) i SEO.
 
-First, run the development server:
+## Funkcjonalności
+
+- Wyszukiwanie filmów z filtrowaniem po roku premiery i typie (film / serial / odcinek)
+- Klasyczna paginacja wyników
+- Widok szczegółów filmu (tytuł, opis, gatunek, oceny, poster itp.)
+- Lista ulubionych z trwałym zapisem w `localStorage`
+- Dwujęzyczny interfejs (PL / EN)
+- Obsługa błędów API, responsywny layout, podstawowe wymogi WCAG
+
+## Wymagania
+
+- Node.js 20+
+- Klucz API OMDb (darmowa rejestracja na [omdbapi.com/apikey.aspx](https://www.omdbapi.com/apikey.aspx))
+
+## Uruchomienie
+
+1. Sklonuj repozytorium i zainstaluj zależności:
+
+```bash
+npm install
+```
+
+2. Skopiuj plik env i uzupełnij klucz API (obsługiwane: `.env.local` lub `.env`):
+
+```bash
+cp .env.example .env.local
+```
+
+3. Uruchom serwer deweloperski:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Aplikacja będzie dostępna pod adresem [http://localhost:3000](http://localhost:3000). Middleware przekieruje na `/pl` lub `/en` w zależności od języka przeglądarki.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Skrypty
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Skrypt | Opis |
+|--------|------|
+| `npm run dev` | Serwer deweloperski |
+| `npm run build` | Build produkcyjny |
+| `npm run start` | Uruchomienie buildu |
+| `npm run lint` | ESLint |
+| `npm run typecheck` | Sprawdzenie typów TypeScript |
+| `npm run test` | Testy w trybie watch |
+| `npm run test:run` | Testy jednorazowo |
 
-## Learn More
+## Stack technologiczny
 
-To learn more about Next.js, take a look at the following resources:
+| Narzędzie | Rola |
+|-----------|------|
+| **Next.js 16** | Framework SSR (App Router) |
+| **React 19** | UI |
+| **TypeScript** | Type safety |
+| **Tailwind CSS 4** | Stylowanie |
+| **Vitest + Testing Library** | Testy jednostkowe |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Klucz API jest używany wyłącznie po stronie serwera (`lib/omdb/`), nigdy nie trafia do przeglądarki.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Struktura projektu
 
-## Deploy on Vercel
+```
+src/
+├── app/[locale]/          # Strony (PL/EN routing)
+├── components/            # Komponenty UI
+├── i18n/                  # Słowniki tłumaczeń
+├── lib/omdb/              # Klient OMDb API
+├── lib/favorites/         # Ulubione (localStorage)
+└── middleware.ts          # Redirect locale
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Testy
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run test:run
+```
+
+Testy obejmują klienta OMDb, storage ulubionych oraz kluczowe komponenty UI.

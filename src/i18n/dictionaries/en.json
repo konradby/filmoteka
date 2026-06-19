@@ -1,0 +1,77 @@
+{
+  "nav": {
+    "home": "Search",
+    "favorites": "Favorites",
+    "appName": "Filmoteka"
+  },
+  "search": {
+    "title": "Search movies and series",
+    "subtitle": "Browse the OMDb database by title, release year, and media type.",
+    "placeholder": "Enter a movie or series title…",
+    "submit": "Search",
+    "emptyPrompt": "Enter a search term to see results.",
+    "noResults": "No results match your criteria.",
+    "resultsFor": "Results for “{query}”",
+    "resultsCount": "Found {count} results"
+  },
+  "filters": {
+    "year": "Release year",
+    "yearPlaceholder": "e.g. 2008",
+    "type": "Type",
+    "typeAll": "All",
+    "typeMovie": "Movie",
+    "typeSeries": "Series",
+    "typeEpisode": "Episode"
+  },
+  "pagination": {
+    "label": "Results pagination",
+    "previous": "Previous",
+    "next": "Next",
+    "pageInfo": "Page {current} of {total}"
+  },
+  "movie": {
+    "backToSearch": "Back to search",
+    "director": "Director",
+    "writers": "Writers",
+    "actors": "Cast",
+    "genre": "Genre",
+    "runtime": "Runtime",
+    "released": "Released",
+    "rated": "Rated",
+    "language": "Language",
+    "country": "Country",
+    "awards": "Awards",
+    "ratings": "Ratings",
+    "boxOffice": "Box office",
+    "production": "Production",
+    "noPoster": "No poster available",
+    "addFavorite": "Add to favorites",
+    "removeFavorite": "Remove from favorites"
+  },
+  "favorites": {
+    "title": "Favorite movies",
+    "subtitle": "Your personal list stored locally in the browser.",
+    "empty": "You don't have any favorites yet.",
+    "remove": "Remove",
+    "count": "{count} items"
+  },
+  "errors": {
+    "generic": "Something went wrong. Please try again.",
+    "notFound": "Movie not found.",
+    "network": "Could not reach the API. Check your internet connection.",
+    "config": "API key missing. Configure OMDB_API_KEY in .env.local.",
+    "retry": "Try again"
+  },
+  "a11y": {
+    "skipToContent": "Skip to content",
+    "languageSwitcher": "Choose language",
+    "searchResults": "Search results",
+    "favoriteToggle": "Toggle favorite for {title}"
+  },
+  "meta": {
+    "defaultTitle": "Filmoteka — OMDb movie search",
+    "defaultDescription": "Search movies and series, browse details, and save your favorite titles.",
+    "searchTitle": "Results: {query} — Filmoteka",
+    "movieTitle": "{title} ({year}) — Filmoteka"
+  }
+}
