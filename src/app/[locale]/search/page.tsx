@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
-import { SearchForm } from "@/components/search/SearchForm";
+import { SearchView } from "@/components/search/SearchView";
 import { SearchResults } from "@/components/search/SearchResults";
 import { SearchResultsSkeleton } from "@/components/search/SearchResultsSkeleton";
 import type { Locale } from "@/i18n/config";
@@ -107,25 +107,26 @@ export default async function SearchPage({
         <p className="mt-2 text-muted">{dictionary.search.subtitle}</p>
       </div>
 
-      <SearchForm
+      <SearchView
         locale={locale}
         dictionary={dictionary}
         initialQuery={query}
         initialYear={year}
         initialType={typeParam}
         currentSort={sort}
+        results={
+          <Suspense
+            key={getSearchKey(resolvedSearchParams)}
+            fallback={<SearchResultsSkeleton dictionary={dictionary} />}
+          >
+            <SearchResults
+              locale={locale}
+              dictionary={dictionary}
+              searchParams={resolvedSearchParams}
+            />
+          </Suspense>
+        }
       />
-
-      <Suspense
-        key={getSearchKey(resolvedSearchParams)}
-        fallback={<SearchResultsSkeleton dictionary={dictionary} />}
-      >
-        <SearchResults
-          locale={locale}
-          dictionary={dictionary}
-          searchParams={resolvedSearchParams}
-        />
-      </Suspense>
     </main>
   );
 }

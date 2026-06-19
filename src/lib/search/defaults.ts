@@ -5,5 +5,5 @@ export function getEffectiveSearchQuery(query: string | undefined): string {
 }
 
 export function shouldApplyDefaultSearchQuery(query: string | undefined): boolean {
-  return !query?.trim();
+  return query === undefined;
 }

@@ -16,7 +16,8 @@ describe("search defaults", () => {
 
   it("detects when default query should be applied", () => {
     expect(shouldApplyDefaultSearchQuery(undefined)).toBe(true);
-    expect(shouldApplyDefaultSearchQuery("")).toBe(true);
+    expect(shouldApplyDefaultSearchQuery("")).toBe(false);
+    expect(shouldApplyDefaultSearchQuery("   ")).toBe(false);
     expect(shouldApplyDefaultSearchQuery("batman")).toBe(false);
   });
 });

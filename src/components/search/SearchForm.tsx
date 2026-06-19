@@ -26,6 +26,7 @@ interface SearchFormProps {
   initialYear?: string;
   initialType?: string;
   currentSort?: SearchSort;
+  onQueryCleared?: () => void;
 }
 
 const DEBOUNCE_MS = 500;
@@ -37,6 +38,7 @@ export function SearchForm({
   initialYear = "",
   initialType = "",
   currentSort = DEFAULT_SEARCH_SORT,
+  onQueryCleared,
 }: SearchFormProps) {
   const router = useRouter();
   const statusId = useId();
@@ -56,6 +58,12 @@ export function SearchForm({
 
   const navigate = useCallback(
     (nextQuery: string, nextYear: string, nextType: string) => {
+      if (!nextQuery.trim()) {
+        onQueryCleared?.();
+        setIsPending(false);
+        return;
+      }
+
       const url = buildSearchUrl(locale, {
         q: nextQuery,
         year: nextYear,
@@ -80,7 +88,7 @@ export function SearchForm({
       setIsPending(true);
       router.push(url);
     },
-    [locale, router, initialQuery, initialYear, initialType, currentSort],
+    [locale, router, initialQuery, initialYear, initialType, currentSort, onQueryCleared],
   );
 
   const scheduleSearch = useCallback(
