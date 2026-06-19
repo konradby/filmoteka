@@ -1,4 +1,5 @@
 import type { OmdbMediaType } from "@/lib/omdb/constants";
+import type { SearchSort } from "@/lib/search/sort";
 import {
   normalizeOmdbField,
   normalizeOmdbPoster,
@@ -10,6 +11,7 @@ export interface OmdbSearchItem {
   imdbID: string;
   Type: string;
   Poster: string;
+  imdbRating?: string;
 }
 
 export interface OmdbSearchSuccessResponse {
@@ -65,6 +67,7 @@ export interface SearchMoviesParams {
   page?: number;
   year?: string;
   type?: OmdbMediaType;
+  sort?: SearchSort;
 }
 
 export interface SearchMoviesResult {

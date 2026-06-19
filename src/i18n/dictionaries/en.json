@@ -1,8 +1,28 @@
 {
   "nav": {
-    "home": "Search",
+    "search": "Search",
     "favorites": "Favorites",
     "appName": "Filmoteka"
+  },
+  "landing": {
+    "eyebrow": "OMDb",
+    "headline": "Discover movies and series",
+    "subtitle": "Browse the OMDb catalog — enter a title and start exploring.",
+    "hint": "Enter a title and click Search.",
+    "features": {
+      "titles": {
+        "title": "Thousands of titles",
+        "description": "Movies, series, and episodes in one place."
+      },
+      "details": {
+        "title": "Rich details",
+        "description": "Cast, ratings, plots, and posters."
+      },
+      "favorites": {
+        "title": "Your list",
+        "description": "Save favorite titles locally."
+      }
+    }
   },
   "search": {
     "title": "Search movies and series",
@@ -23,6 +43,11 @@
     "typeMovie": "Movie",
     "typeSeries": "Series",
     "typeEpisode": "Episode"
+  },
+  "sort": {
+    "label": "Sort by",
+    "relevance": "Relevance",
+    "rating": "Highest rating"
   },
   "pagination": {
     "label": "Results pagination",
@@ -59,6 +84,7 @@
   "errors": {
     "generic": "Something went wrong. Please try again.",
     "notFound": "Movie not found.",
+    "tooManyResults": "Too many results. Refine your search.",
     "network": "Could not reach the API. Check your internet connection.",
     "config": "API key missing. Configure OMDB_API_KEY in .env.local.",
     "retry": "Try again"
@@ -68,13 +94,15 @@
     "mainNavigation": "Main navigation",
     "languageSwitcher": "Choose language",
     "searchForm": "Movie search form",
+    "landingSearchForm": "Home page search",
     "searchResults": "Search results",
     "favoriteToggle": "Toggle favorite for {title}",
     "openMovieDetails": "View movie details: {title}",
     "removeFavoriteFor": "Remove from favorites: {title}",
     "loadingResults": "Loading search results",
     "loadingMovie": "Loading movie details",
-    "searchStatus": "Search status"
+    "searchStatus": "Search status",
+    "imdbRating": "IMDb rating: {rating} out of 10"
   },
   "footer": {
     "tagline": "Filmoteka — OMDb movie and series search.",

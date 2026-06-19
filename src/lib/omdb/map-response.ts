@@ -50,6 +50,7 @@ export function mapSearchItem(raw: Partial<OmdbSearchItem>): OmdbSearchItem {
     imdbID: normalizeOmdbField(raw.imdbID),
     Type: normalizeOmdbField(raw.Type),
     Poster: normalizeOmdbPoster(raw.Poster),
+    imdbRating: normalizeOmdbField(raw.imdbRating),
   };
 }
 

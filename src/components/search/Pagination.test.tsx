@@ -21,11 +21,11 @@ describe("Pagination", () => {
     expect(screen.getByText("Page 2 of 5")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Previous" })).toHaveAttribute(
       "href",
-      "/en?q=batman",
+      "/en/search?q=batman",
     );
     expect(screen.getByRole("link", { name: "Next" })).toHaveAttribute(
       "href",
-      "/en?q=batman&page=3",
+      "/en/search?q=batman&page=3",
     );
   });
 
@@ -44,7 +44,7 @@ describe("Pagination", () => {
 
     expect(screen.getByRole("link", { name: "Next" })).toHaveAttribute(
       "href",
-      "/pl?q=batman&year=2008&type=movie&page=2",
+      "/pl/search?q=batman&year=2008&type=movie&page=2",
     );
   });
 

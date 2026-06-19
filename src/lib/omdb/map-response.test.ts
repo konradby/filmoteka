@@ -41,6 +41,7 @@ describe("omdb map-response", () => {
       imdbID: "tt0372784",
       Type: "movie",
       Poster: "",
+      imdbRating: "",
     });
   });
 

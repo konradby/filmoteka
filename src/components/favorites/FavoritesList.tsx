@@ -10,6 +10,7 @@ import { isValidPosterUrl } from "@/lib/omdb/constants";
 import {
   interactiveButtonClassName,
   interactiveLinkClassName,
+  movieGridClassName,
 } from "@/lib/ui/classes";
 
 interface FavoritesListProps {
@@ -46,7 +47,7 @@ export function FavoritesList({ locale, dictionary }: FavoritesListProps) {
 
   return (
     <ul
-      className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+      className={movieGridClassName}
       aria-label={dictionary.favorites.title}
     >
       {favorites.map((movie) => {
@@ -74,11 +75,11 @@ export function FavoritesList({ locale, dictionary }: FavoritesListProps) {
                   alt=""
                   aria-hidden="true"
                   fill
-                  sizes="(max-width: 640px) 100vw, 33vw"
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                   className="object-cover"
                 />
               ) : (
-                <div className="flex h-full min-h-[280px] items-center justify-center px-4 text-center text-sm text-muted">
+                <div className="flex h-full min-h-[180px] items-center justify-center px-4 text-center text-sm text-muted">
                   {dictionary.movie.noPoster}
                 </div>
               )}

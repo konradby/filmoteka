@@ -13,8 +13,8 @@ import {
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import { buildSearchUrl } from "@/lib/search/build-search-url";
+import { DEFAULT_SEARCH_SORT, type SearchSort } from "@/lib/search/sort";
 import {
-  interactiveButtonClassName,
   interactiveInputClassName,
   interactiveSelectClassName,
 } from "@/lib/ui/classes";
@@ -25,6 +25,7 @@ interface SearchFormProps {
   initialQuery?: string;
   initialYear?: string;
   initialType?: string;
+  currentSort?: SearchSort;
 }
 
 const DEBOUNCE_MS = 500;
@@ -35,6 +36,7 @@ export function SearchForm({
   initialQuery = "",
   initialYear = "",
   initialType = "",
+  currentSort = DEFAULT_SEARCH_SORT,
 }: SearchFormProps) {
   const router = useRouter();
   const statusId = useId();
@@ -58,6 +60,7 @@ export function SearchForm({
         q: nextQuery,
         year: nextYear,
         type: nextType,
+        sort: currentSort,
         page: 1,
       });
 
@@ -65,6 +68,7 @@ export function SearchForm({
         q: initialQuery,
         year: initialYear,
         type: initialType,
+        sort: currentSort,
         page: 1,
       });
 
@@ -76,7 +80,7 @@ export function SearchForm({
       setIsPending(true);
       router.push(url);
     },
-    [locale, router, initialQuery, initialYear, initialType],
+    [locale, router, initialQuery, initialYear, initialType, currentSort],
   );
 
   const scheduleSearch = useCallback(
@@ -115,7 +119,7 @@ export function SearchForm({
     if (debounceRef.current) {
       clearTimeout(debounceRef.current);
     }
-    navigate(nextQuery, nextYear, type);
+    navigate(nextQuery, nextYear, nextType);
   }
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -195,14 +199,6 @@ export function SearchForm({
           </select>
         </div>
       </div>
-
-      <button
-        type="submit"
-        disabled={isPending}
-        className={`${interactiveButtonClassName} mt-4 inline-flex min-h-11 w-full items-center justify-center rounded-lg bg-accent px-4 py-2.5 text-sm font-semibold text-accent-foreground transition-colors hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto`}
-      >
-        {isPending ? dictionary.search.loading : dictionary.search.submit}
-      </button>
 
       <p
         id={statusId}

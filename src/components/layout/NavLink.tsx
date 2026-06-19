@@ -3,13 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { getSearchBasePath } from "@/lib/search/build-search-url";
 import { interactiveLinkClassName } from "@/lib/ui/classes";
 
 interface NavLinkProps {
   href: string;
   locale: string;
   children: React.ReactNode;
-  matchPath?: "home" | "favorites";
+  matchPath?: "search" | "favorites";
 }
 
 export function NavLink({
@@ -22,7 +23,8 @@ export function NavLink({
   const isActive =
     matchPath === "favorites"
       ? pathname === `/${locale}/favorites`
-      : pathname === `/${locale}`;
+      : pathname === getSearchBasePath(locale) ||
+        pathname.startsWith(`${getSearchBasePath(locale)}/`);
 
   return (
     <Link

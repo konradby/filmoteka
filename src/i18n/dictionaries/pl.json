@@ -1,8 +1,28 @@
 {
   "nav": {
-    "home": "Wyszukiwarka",
+    "search": "Wyszukiwarka",
     "favorites": "Ulubione",
     "appName": "Filmoteka"
+  },
+  "landing": {
+    "eyebrow": "OMDb",
+    "headline": "Odkrywaj filmy i seriale",
+    "subtitle": "Przeszukaj bazę OMDb — wpisz tytuł i rozpocznij odkrywanie.",
+    "hint": "Wpisz tytuł i kliknij Szukaj.",
+    "features": {
+      "titles": {
+        "title": "Tysiące tytułów",
+        "description": "Filmy, seriale i odcinki w jednym miejscu."
+      },
+      "details": {
+        "title": "Pełne informacje",
+        "description": "Obsada, oceny, opisy i plakaty."
+      },
+      "favorites": {
+        "title": "Twoja lista",
+        "description": "Zapisuj ulubione tytuły lokalnie."
+      }
+    }
   },
   "search": {
     "title": "Wyszukiwaj filmy i seriale",
@@ -23,6 +43,11 @@
     "typeMovie": "Film",
     "typeSeries": "Serial",
     "typeEpisode": "Odcinek"
+  },
+  "sort": {
+    "label": "Sortowanie",
+    "relevance": "Trafność",
+    "rating": "Najwyższa ocena"
   },
   "pagination": {
     "label": "Paginacja wyników",
@@ -59,6 +84,7 @@
   "errors": {
     "generic": "Wystąpił błąd. Spróbuj ponownie.",
     "notFound": "Nie znaleziono filmu.",
+    "tooManyResults": "Zbyt wiele wyników. Doprecyzuj wyszukiwanie.",
     "network": "Błąd połączenia z API. Sprawdź połączenie internetowe.",
     "config": "Brak klucza API. Skonfiguruj OMDB_API_KEY w pliku .env.local.",
     "retry": "Spróbuj ponownie"
@@ -68,13 +94,15 @@
     "mainNavigation": "Nawigacja główna",
     "languageSwitcher": "Wybierz język",
     "searchForm": "Formularz wyszukiwania filmów",
+    "landingSearchForm": "Wyszukiwanie na stronie głównej",
     "searchResults": "Wyniki wyszukiwania",
     "favoriteToggle": "Przełącz ulubione dla {title}",
     "openMovieDetails": "Zobacz szczegóły filmu: {title}",
     "removeFavoriteFor": "Usuń z ulubionych: {title}",
     "loadingResults": "Trwa ładowanie wyników wyszukiwania",
     "loadingMovie": "Trwa ładowanie szczegółów filmu",
-    "searchStatus": "Status wyszukiwania"
+    "searchStatus": "Status wyszukiwania",
+    "imdbRating": "Ocena IMDb: {rating} na 10"
   },
   "footer": {
     "tagline": "Filmoteka — wyszukiwarka filmów i seriali OMDb.",

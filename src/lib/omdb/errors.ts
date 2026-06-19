@@ -12,6 +12,13 @@ export class OmdbNotFoundError extends OmdbApiError {
   }
 }
 
+export class OmdbTooManyResultsError extends OmdbApiError {
+  constructor(message: string) {
+    super(message);
+    this.name = "OmdbTooManyResultsError";
+  }
+}
+
 export class OmdbNetworkError extends Error {
   constructor(message: string) {
     super(message);

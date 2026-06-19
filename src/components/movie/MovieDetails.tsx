@@ -5,7 +5,9 @@ import { FavoriteButton } from "@/components/movie/FavoriteButton";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import { isValidPosterUrl } from "@/lib/omdb/constants";
+import { formatMediaType } from "@/lib/omdb/format-media-type";
 import { toFavoriteMovie, type OmdbMovieDetails } from "@/lib/omdb/types";
+import { getSearchBasePath } from "@/lib/search/build-search-url";
 import { interactiveLinkClassName } from "@/lib/ui/classes";
 
 interface MovieDetailsProps {
@@ -61,7 +63,7 @@ export function MovieDetails({ movie, locale, dictionary }: MovieDetailsProps) {
 
       <div className="min-w-0">
         <Link
-          href={`/${locale}`}
+          href={getSearchBasePath(locale)}
           className={`${interactiveLinkClassName} mb-4 inline-flex items-center text-sm text-muted transition-colors hover:text-accent`}
         >
           ← {dictionary.movie.backToSearch}
@@ -69,8 +71,8 @@ export function MovieDetails({ movie, locale, dictionary }: MovieDetailsProps) {
         <h1 className="text-3xl font-bold tracking-tight text-balance text-foreground">
           {movie.Title}
         </h1>
-        <p className="mt-2 text-lg capitalize text-muted">
-          {movie.Year} · {movie.Type}
+        <p className="mt-2 text-lg text-muted">
+          {movie.Year} · {formatMediaType(movie.Type, dictionary)}
         </p>
 
         {movie.Plot && (

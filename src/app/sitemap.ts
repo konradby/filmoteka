@@ -19,6 +19,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
       },
     },
     {
+      url: `${baseUrl}/${locale}/search`,
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.9,
+      alternates: {
+        languages: Object.fromEntries(
+          locales.map((lang) => [lang, `${baseUrl}/${lang}/search`]),
+        ),
+      },
+    },
+    {
       url: `${baseUrl}/${locale}/favorites`,
       lastModified: new Date(),
       changeFrequency: "weekly",

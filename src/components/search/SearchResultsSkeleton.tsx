@@ -1,4 +1,5 @@
 import type { Dictionary } from "@/i18n/get-dictionary";
+import { MOVIE_GRID_SIZE, movieGridClassName } from "@/lib/ui/classes";
 
 interface SearchResultsSkeletonProps {
   dictionary: Dictionary;
@@ -18,8 +19,8 @@ export function SearchResultsSkeleton({
         <div className="h-7 w-64 max-w-full animate-pulse rounded-lg bg-surface-elevated" />
         <div className="h-4 w-40 max-w-full animate-pulse rounded-lg bg-surface-elevated" />
       </div>
-      <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {Array.from({ length: 6 }).map((_, index) => (
+      <ul className={movieGridClassName}>
+        {Array.from({ length: MOVIE_GRID_SIZE }).map((_, index) => (
           <li
             key={index}
             className="overflow-hidden rounded-xl border border-border bg-surface"

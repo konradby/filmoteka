@@ -4,21 +4,22 @@ import { buildSearchUrl } from "@/lib/search/build-search-url";
 
 describe("buildSearchUrl", () => {
   it("builds a query-only search url", () => {
-    expect(buildSearchUrl("pl", { q: "batman" })).toBe("/pl?q=batman");
+    expect(buildSearchUrl("pl", { q: "batman" })).toBe("/pl/search?q=batman");
   });
 
-  it("includes filters and pagination", () => {
+  it("includes filters, sort, and pagination", () => {
     expect(
       buildSearchUrl("en", {
         q: "batman",
         year: "2008",
         type: "movie",
+        sort: "rating",
         page: 2,
       }),
-    ).toBe("/en?q=batman&year=2008&type=movie&page=2");
+    ).toBe("/en/search?q=batman&year=2008&type=movie&sort=rating&page=2");
   });
 
-  it("returns locale path when query is empty", () => {
-    expect(buildSearchUrl("pl", { q: "   " })).toBe("/pl");
+  it("returns search page path when query is empty", () => {
+    expect(buildSearchUrl("pl", { q: "   " })).toBe("/pl/search");
   });
 });

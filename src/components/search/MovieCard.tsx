@@ -4,9 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { FavoriteButton } from "@/components/movie/FavoriteButton";
+import { StarRating } from "@/components/movie/StarRating";
 import type { Locale } from "@/i18n/config";
 import { formatMessage, type Dictionary } from "@/i18n/get-dictionary";
 import { isValidPosterUrl } from "@/lib/omdb/constants";
+import { formatMediaType } from "@/lib/omdb/format-media-type";
+import { parseImdbRating } from "@/lib/movie/rating";
 import { toFavoriteMovie, type OmdbSearchItem } from "@/lib/omdb/types";
 import { interactiveLinkClassName } from "@/lib/ui/classes";
 
@@ -18,6 +21,7 @@ interface MovieCardProps {
 
 export function MovieCard({ movie, locale, dictionary }: MovieCardProps) {
   const hasPoster = isValidPosterUrl(movie.Poster);
+  const rating = parseImdbRating(movie.imdbRating);
   const detailsLabel = formatMessage(dictionary.a11y.openMovieDetails, {
     title: movie.Title,
   });
@@ -35,12 +39,21 @@ export function MovieCard({ movie, locale, dictionary }: MovieCardProps) {
             alt=""
             aria-hidden="true"
             fill
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             className="object-cover transition-transform duration-300 hover:scale-[1.02]"
           />
         ) : (
-          <div className="flex h-full min-h-[280px] items-center justify-center px-4 text-center text-sm text-muted">
+          <div className="flex h-full min-h-[180px] items-center justify-center px-4 text-center text-sm text-muted">
             {dictionary.movie.noPoster}
+          </div>
+        )}
+        {rating !== null && (
+          <div className="absolute bottom-2 left-2 rounded-md border border-border/60 bg-background/90 px-2 py-1 backdrop-blur-sm">
+            <StarRating
+              imdbRating={movie.imdbRating ?? ""}
+              dictionary={dictionary}
+              showValue
+            />
           </div>
         )}
       </Link>
@@ -54,8 +67,8 @@ export function MovieCard({ movie, locale, dictionary }: MovieCardProps) {
               {movie.Title}
             </Link>
           </h3>
-          <p className="text-sm capitalize text-muted">
-            {movie.Year} · {movie.Type}
+          <p className="text-sm text-muted">
+            {movie.Year} · {formatMediaType(movie.Type, dictionary)}
           </p>
         </div>
         <FavoriteButton

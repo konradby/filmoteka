@@ -1,12 +1,13 @@
 import { MovieList } from "@/components/search/MovieList";
 import { Pagination } from "@/components/search/Pagination";
-import { EmptyState } from "@/components/ui/EmptyState";
+import { SearchResultsSort } from "@/components/search/SearchResultsSort";import { EmptyState } from "@/components/ui/EmptyState";
 import { ErrorMessage } from "@/components/ui/ErrorMessage";
 import type { Locale } from "@/i18n/config";
 import { formatMessage, type Dictionary } from "@/i18n/get-dictionary";
-import { searchMovies } from "@/lib/omdb/client";
+import { searchMovies, enrichSearchItemsWithRatings } from "@/lib/omdb/client";
 import { isOmdbMediaType } from "@/lib/omdb/constants";
 import { getErrorMessage } from "@/lib/omdb/get-error-message";
+import { parseSearchSort } from "@/lib/search/sort";
 
 interface SearchResultsProps {
   locale: Locale;
@@ -16,6 +17,7 @@ interface SearchResultsProps {
     year?: string;
     type?: string;
     page?: string;
+    sort?: string;
   };
 }
 
@@ -28,6 +30,7 @@ export async function SearchResults({
   const year = searchParams.year?.trim() ?? "";
   const typeParam = searchParams.type?.trim() ?? "";
   const type = isOmdbMediaType(typeParam) ? typeParam : undefined;
+  const sort = parseSearchSort(searchParams.sort);
   const page = Math.max(
     1,
     Number.parseInt(searchParams.page ?? "1", 10) || 1,
@@ -48,12 +51,21 @@ export async function SearchResults({
   let searchError: string | null = null;
 
   try {
-    searchResult = await searchMovies({
+    const result = await searchMovies({
       query,
       page,
       year: year || undefined,
       type,
+      sort,
     });
+
+    searchResult = {
+      ...result,
+      items:
+        sort === "rating"
+          ? result.items
+          : await enrichSearchItemsWithRatings(result.items),
+    };
   } catch (error) {
     searchError = getErrorMessage(error, dictionary);
   }
@@ -81,18 +93,28 @@ export async function SearchResults({
 
       {searchResult && searchResult.items.length > 0 && (
         <div className="space-y-8">
-          <div>
-            <h2
-              id="search-results-heading"
-              className="text-xl font-semibold text-foreground"
-            >
-              {formatMessage(dictionary.search.resultsFor, { query })}
-            </h2>
-            <p className="mt-1 text-sm text-muted">
-              {formatMessage(dictionary.search.resultsCount, {
-                count: searchResult.totalResults,
-              })}
-            </p>
+          <div className="flex flex-col gap-4 border-b border-border pb-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <h2
+                id="search-results-heading"
+                className="text-xl font-semibold text-foreground"
+              >
+                {formatMessage(dictionary.search.resultsFor, { query })}
+              </h2>
+              <p className="mt-1 text-sm text-muted">
+                {formatMessage(dictionary.search.resultsCount, {
+                  count: searchResult.totalResults,
+                })}
+              </p>
+            </div>
+            <SearchResultsSort
+              locale={locale}
+              dictionary={dictionary}
+              query={query}
+              year={year || undefined}
+              type={type}
+              currentSort={sort}
+            />
           </div>
           <MovieList
             movies={searchResult.items}
@@ -107,6 +129,7 @@ export async function SearchResults({
             query={query}
             year={year || undefined}
             type={type}
+            sort={sort}
           />
         </div>
       )}

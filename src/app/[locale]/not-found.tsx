@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { defaultLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
+import { getSearchBasePath } from "@/lib/search/build-search-url";
 import { interactiveLinkClassName } from "@/lib/ui/classes";
 
 export default async function NotFound({
@@ -18,7 +19,7 @@ export default async function NotFound({
       <h1 className="text-4xl font-bold text-accent">404</h1>
       <p className="mt-2 text-muted">{dictionary.errors.notFound}</p>
       <Link
-        href={`/${locale}`}
+        href={getSearchBasePath(locale)}
         className={`${interactiveLinkClassName} mt-6 rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-accent-foreground transition-colors hover:bg-accent-hover`}
       >
         {dictionary.movie.backToSearch}

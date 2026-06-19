@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 
 import { locales, type Locale } from "@/i18n/config";
+import { buildSearchUrl } from "@/lib/search/build-search-url";
+import { parseSearchSort } from "@/lib/search/sort";
 
 export function getSiteUrl(): string {
   return process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
@@ -22,16 +24,13 @@ export function getSearchUrl(
   locale: Locale,
   params: Record<string, string | undefined>,
 ): string {
-  const searchParams = new URLSearchParams();
-
-  for (const [key, value] of Object.entries(params)) {
-    if (value) {
-      searchParams.set(key, value);
-    }
-  }
-
-  const queryString = searchParams.toString();
-  return `${getLocalizedUrl(locale)}${queryString ? `?${queryString}` : ""}`;
+  return `${getSiteUrl()}${buildSearchUrl(locale, {
+    q: params.q ?? "",
+    year: params.year,
+    type: params.type,
+    page: params.page ? Number.parseInt(params.page, 10) || 1 : 1,
+    sort: parseSearchSort(params.sort),
+  })}`;
 }
 
 export function getLanguageAlternates(path = ""): Record<string, string> {

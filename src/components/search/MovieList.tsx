@@ -2,6 +2,7 @@ import { MovieCard } from "@/components/search/MovieCard";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { OmdbSearchItem } from "@/lib/omdb/types";
+import { movieGridClassName } from "@/lib/ui/classes";
 
 interface MovieListProps {
   movies: OmdbSearchItem[];
@@ -13,7 +14,7 @@ export function MovieList({ movies, locale, dictionary }: MovieListProps) {
   return (
     <ul
       aria-label={dictionary.a11y.searchResults}
-      className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+      className={movieGridClassName}
     >
       {movies.map((movie) => (
         <li key={movie.imdbID} className="h-full">

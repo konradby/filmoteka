@@ -4,6 +4,7 @@ import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 import { NavLink } from "@/components/layout/NavLink";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
+import { getSearchBasePath } from "@/lib/search/build-search-url";
 import { interactiveLinkClassName } from "@/lib/ui/classes";
 
 interface HeaderProps {
@@ -25,8 +26,12 @@ export function Header({ locale, dictionary }: HeaderProps) {
           <nav aria-label={dictionary.a11y.mainNavigation}>
             <ul className="flex flex-wrap gap-4 text-sm font-medium">
               <li>
-                <NavLink href={`/${locale}`} locale={locale} matchPath="home">
-                  {dictionary.nav.home}
+                <NavLink
+                  href={getSearchBasePath(locale)}
+                  locale={locale}
+                  matchPath="search"
+                >
+                  {dictionary.nav.search}
                 </NavLink>
               </li>
               <li>

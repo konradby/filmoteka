@@ -1,9 +1,8 @@
-import Link from "next/link";
-
 import { PaginationLink } from "@/components/search/PaginationLink";
 import type { Locale } from "@/i18n/config";
 import { formatMessage, type Dictionary } from "@/i18n/get-dictionary";
 import { buildPageHref } from "@/lib/search/build-page-href";
+import type { SearchSort } from "@/lib/search/sort";
 
 interface PaginationProps {
   locale: Locale;
@@ -13,6 +12,7 @@ interface PaginationProps {
   query: string;
   year?: string;
   type?: string;
+  sort?: SearchSort;
 }
 
 export function Pagination({
@@ -23,6 +23,7 @@ export function Pagination({
   query,
   year,
   type,
+  sort,
 }: PaginationProps) {
   if (totalPages <= 1) return null;
 
@@ -55,6 +56,7 @@ export function Pagination({
               query,
               year,
               type,
+              sort,
             })}
             dictionary={dictionary}
             rel="prev"
@@ -74,6 +76,7 @@ export function Pagination({
               query,
               year,
               type,
+              sort,
             })}
             dictionary={dictionary}
             rel="next"
