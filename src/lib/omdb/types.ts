@@ -1,4 +1,8 @@
 import type { OmdbMediaType } from "@/lib/omdb/constants";
+import {
+  normalizeOmdbField,
+  normalizeOmdbPoster,
+} from "@/lib/omdb/map-response";
 
 export interface OmdbSearchItem {
   Title: string;
@@ -90,10 +94,10 @@ export function isDetailsSuccess(
 
 export function toFavoriteMovie(item: OmdbSearchItem | OmdbMovieDetails) {
   return {
-    imdbID: item.imdbID,
-    Title: item.Title,
-    Year: item.Year,
-    Poster: item.Poster,
-    Type: item.Type,
+    imdbID: normalizeOmdbField(item.imdbID),
+    Title: normalizeOmdbField(item.Title),
+    Year: normalizeOmdbField(item.Year),
+    Poster: normalizeOmdbPoster(item.Poster),
+    Type: normalizeOmdbField(item.Type),
   };
 }

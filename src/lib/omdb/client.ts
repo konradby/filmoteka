@@ -11,6 +11,7 @@ import {
   OmdbNetworkError,
   OmdbNotFoundError,
 } from "@/lib/omdb/errors";
+import { mapMovieDetails, mapSearchItem } from "@/lib/omdb/map-response";
 import {
   isDetailsSuccess,
   isOmdbError,
@@ -119,7 +120,7 @@ export async function searchMovies(
   const totalPages = Math.max(1, Math.ceil(totalResults / RESULTS_PER_PAGE));
 
   return {
-    items: data.Search,
+    items: data.Search.map(mapSearchItem),
     totalResults,
     page,
     totalPages,
@@ -140,5 +141,5 @@ export async function getMovieDetails(imdbId: string) {
     throw new OmdbApiError("Unexpected details response format");
   }
 
-  return data;
+  return mapMovieDetails(data);
 }

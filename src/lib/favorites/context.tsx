@@ -24,6 +24,7 @@ interface FavoritesContextValue {
 const FavoritesContext = createContext<FavoritesContextValue | null>(null);
 
 const listeners = new Set<() => void>();
+const SERVER_SNAPSHOT: FavoriteMovie[] = [];
 let favoritesCache: FavoriteMovie[] = [];
 
 function emitChange() {
@@ -41,7 +42,19 @@ function getSnapshot(): FavoriteMovie[] {
 }
 
 function getServerSnapshot(): FavoriteMovie[] {
-  return [];
+  return SERVER_SNAPSHOT;
+}
+
+function subscribeHydration() {
+  return () => {};
+}
+
+function getHydratedSnapshot(): boolean {
+  return true;
+}
+
+function getServerHydrationSnapshot(): boolean {
+  return false;
 }
 
 function persistFavorites(next: FavoriteMovie[]) {
@@ -55,6 +68,12 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
     subscribe,
     getSnapshot,
     getServerSnapshot,
+  );
+
+  const isHydrated = useSyncExternalStore(
+    subscribeHydration,
+    getHydratedSnapshot,
+    getServerHydrationSnapshot,
   );
 
   const isFavoriteFn = useCallback(
@@ -86,13 +105,13 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
   const value = useMemo(
     () => ({
       favorites,
-      isHydrated: typeof window !== "undefined",
+      isHydrated,
       isFavorite: isFavoriteFn,
       add,
       remove,
       toggle,
     }),
-    [favorites, isFavoriteFn, add, remove, toggle],
+    [favorites, isHydrated, isFavoriteFn, add, remove, toggle],
   );
 
   return (

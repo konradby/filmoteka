@@ -6,6 +6,7 @@ import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import { isValidPosterUrl } from "@/lib/omdb/constants";
 import { toFavoriteMovie, type OmdbMovieDetails } from "@/lib/omdb/types";
+import { interactiveLinkClassName } from "@/lib/ui/classes";
 
 interface MovieDetailsProps {
   movie: OmdbMovieDetails;
@@ -20,14 +21,12 @@ function DetailRow({
   label: string;
   value: string | undefined;
 }) {
-  if (!value || value === "N/A") return null;
+  if (!value) return null;
 
   return (
-    <div>
-      <dt className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
-        {label}
-      </dt>
-      <dd className="mt-1 text-base">{value}</dd>
+    <div className="min-w-0">
+      <dt className="text-sm font-medium text-accent">{label}</dt>
+      <dd className="mt-1 break-words text-base text-foreground">{value}</dd>
     </div>
   );
 }
@@ -36,20 +35,20 @@ export function MovieDetails({ movie, locale, dictionary }: MovieDetailsProps) {
   const hasPoster = isValidPosterUrl(movie.Poster);
 
   return (
-    <article className="grid gap-8 lg:grid-cols-[280px_1fr]">
-      <div className="mx-auto w-full max-w-[280px]">
-        <div className="relative aspect-[2/3] overflow-hidden rounded-xl bg-zinc-100 dark:bg-zinc-800">
+    <article className="grid gap-8 lg:grid-cols-[minmax(0,280px)_1fr] lg:items-start">
+      <div className="mx-auto w-full max-w-[280px] lg:mx-0">
+        <div className="relative aspect-[2/3] overflow-hidden rounded-xl border border-border bg-surface-elevated">
           {hasPoster ? (
             <Image
               src={movie.Poster}
-              alt={movie.Title}
+              alt={`${movie.Title} poster`}
               fill
               sizes="280px"
               priority
               className="object-cover"
             />
           ) : (
-            <div className="flex h-full items-center justify-center px-4 text-center text-sm text-zinc-500">
+            <div className="flex h-full min-h-[360px] items-center justify-center px-4 text-center text-sm text-muted">
               {dictionary.movie.noPoster}
             </div>
           )}
@@ -60,22 +59,22 @@ export function MovieDetails({ movie, locale, dictionary }: MovieDetailsProps) {
         />
       </div>
 
-      <div>
+      <div className="min-w-0">
         <Link
           href={`/${locale}`}
-          className="mb-4 inline-block text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+          className={`${interactiveLinkClassName} mb-4 inline-flex items-center text-sm text-muted transition-colors hover:text-accent`}
         >
           ← {dictionary.movie.backToSearch}
         </Link>
-        <h1 className="text-3xl font-bold tracking-tight">{movie.Title}</h1>
-        <p className="mt-2 text-lg text-zinc-600 dark:text-zinc-400">
+        <h1 className="text-3xl font-bold tracking-tight text-balance text-foreground">
+          {movie.Title}
+        </h1>
+        <p className="mt-2 text-lg capitalize text-muted">
           {movie.Year} · {movie.Type}
         </p>
 
-        {movie.Plot && movie.Plot !== "N/A" && (
-          <p className="mt-6 leading-relaxed text-zinc-800 dark:text-zinc-200">
-            {movie.Plot}
-          </p>
+        {movie.Plot && (
+          <p className="mt-6 leading-relaxed text-foreground/90">{movie.Plot}</p>
         )}
 
         <dl className="mt-8 grid gap-4 sm:grid-cols-2">
@@ -100,21 +99,23 @@ export function MovieDetails({ movie, locale, dictionary }: MovieDetailsProps) {
         </dl>
 
         {movie.Ratings?.length > 0 && (
-          <section className="mt-8">
-            <h2 className="text-lg font-semibold">{dictionary.movie.ratings}</h2>
+          <section className="mt-8" aria-labelledby="movie-ratings-heading">
+            <h2 id="movie-ratings-heading" className="text-lg font-semibold text-accent">
+              {dictionary.movie.ratings}
+            </h2>
             <ul className="mt-3 flex flex-wrap gap-3">
               {movie.Ratings.map((rating) => (
                 <li
                   key={`${rating.Source}-${rating.Value}`}
-                  className="rounded-lg border border-zinc-200 px-3 py-2 text-sm dark:border-zinc-700"
+                  className="rounded-lg border border-border bg-surface px-3 py-2 text-sm"
                 >
-                  <span className="font-medium">{rating.Source}:</span>{" "}
-                  {rating.Value}
+                  <span className="font-medium text-accent">{rating.Source}:</span>{" "}
+                  <span className="text-foreground">{rating.Value}</span>
                 </li>
               ))}
             </ul>
-            {movie.imdbRating && movie.imdbRating !== "N/A" && (
-              <p className="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
+            {movie.imdbRating && (
+              <p className="mt-3 text-sm text-muted">
                 IMDb: {movie.imdbRating}/10 ({movie.imdbVotes} votes)
               </p>
             )}
@@ -125,19 +126,19 @@ export function MovieDetails({ movie, locale, dictionary }: MovieDetailsProps) {
   );
 }
 
-export function buildMovieJsonLd(movie: OmdbMovieDetails) {
+export function buildMovieJsonLd(movie: OmdbMovieDetails, url?: string) {
   return {
     "@context": "https://schema.org",
     "@type": "Movie",
     name: movie.Title,
-    datePublished: movie.Released !== "N/A" ? movie.Released : movie.Year,
-    genre: movie.Genre !== "N/A" ? movie.Genre.split(", ") : undefined,
-    director: movie.Director !== "N/A" ? movie.Director : undefined,
-    actor: movie.Actors !== "N/A" ? movie.Actors.split(", ") : undefined,
-    description: movie.Plot !== "N/A" ? movie.Plot : undefined,
+    url,
+    datePublished: movie.Released || movie.Year || undefined,
+    genre: movie.Genre ? movie.Genre.split(", ") : undefined,
+    director: movie.Director || undefined,
+    actor: movie.Actors ? movie.Actors.split(", ") : undefined,
+    description: movie.Plot || undefined,
     image: isValidPosterUrl(movie.Poster) ? movie.Poster : undefined,
-    aggregateRating:
-      movie.imdbRating && movie.imdbRating !== "N/A"
+    aggregateRating: movie.imdbRating
         ? {
             "@type": "AggregateRating",
             ratingValue: movie.imdbRating,

@@ -1,10 +1,10 @@
 import type { MetadataRoute } from "next";
 
 import { locales } from "@/i18n/config";
+import { getSiteUrl } from "@/lib/seo/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+  const baseUrl = getSiteUrl();
 
   return locales.flatMap((locale) => [
     {
@@ -12,12 +12,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 1,
+      alternates: {
+        languages: Object.fromEntries(
+          locales.map((lang) => [lang, `${baseUrl}/${lang}`]),
+        ),
+      },
     },
     {
       url: `${baseUrl}/${locale}/favorites`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.5,
+      alternates: {
+        languages: Object.fromEntries(
+          locales.map((lang) => [lang, `${baseUrl}/${lang}/favorites`]),
+        ),
+      },
     },
   ]);
 }

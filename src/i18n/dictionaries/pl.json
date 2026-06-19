@@ -12,7 +12,8 @@
     "emptyPrompt": "Wpisz frazę wyszukiwania, aby zobaczyć wyniki.",
     "noResults": "Brak wyników dla podanych kryteriów.",
     "resultsFor": "Wyniki dla „{query}”",
-    "resultsCount": "Znaleziono {count} wyników"
+    "resultsCount": "Znaleziono {count} wyników",
+    "loading": "Wyszukiwanie…"
   },
   "filters": {
     "year": "Rok premiery",
@@ -64,9 +65,20 @@
   },
   "a11y": {
     "skipToContent": "Przejdź do treści",
+    "mainNavigation": "Nawigacja główna",
     "languageSwitcher": "Wybierz język",
+    "searchForm": "Formularz wyszukiwania filmów",
     "searchResults": "Wyniki wyszukiwania",
-    "favoriteToggle": "Przełącz ulubione dla {title}"
+    "favoriteToggle": "Przełącz ulubione dla {title}",
+    "openMovieDetails": "Zobacz szczegóły filmu: {title}",
+    "removeFavoriteFor": "Usuń z ulubionych: {title}",
+    "loadingResults": "Trwa ładowanie wyników wyszukiwania",
+    "loadingMovie": "Trwa ładowanie szczegółów filmu",
+    "searchStatus": "Status wyszukiwania"
+  },
+  "footer": {
+    "tagline": "Filmoteka — wyszukiwarka filmów i seriali OMDb.",
+    "dataSource": "Dane filmowe dostarcza OMDb API."
   },
   "meta": {
     "defaultTitle": "Filmoteka — wyszukiwarka filmów OMDb",

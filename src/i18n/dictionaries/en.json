@@ -12,7 +12,8 @@
     "emptyPrompt": "Enter a search term to see results.",
     "noResults": "No results match your criteria.",
     "resultsFor": "Results for “{query}”",
-    "resultsCount": "Found {count} results"
+    "resultsCount": "Found {count} results",
+    "loading": "Searching…"
   },
   "filters": {
     "year": "Release year",
@@ -64,9 +65,20 @@
   },
   "a11y": {
     "skipToContent": "Skip to content",
+    "mainNavigation": "Main navigation",
     "languageSwitcher": "Choose language",
+    "searchForm": "Movie search form",
     "searchResults": "Search results",
-    "favoriteToggle": "Toggle favorite for {title}"
+    "favoriteToggle": "Toggle favorite for {title}",
+    "openMovieDetails": "View movie details: {title}",
+    "removeFavoriteFor": "Remove from favorites: {title}",
+    "loadingResults": "Loading search results",
+    "loadingMovie": "Loading movie details",
+    "searchStatus": "Search status"
+  },
+  "footer": {
+    "tagline": "Filmoteka — OMDb movie and series search.",
+    "dataSource": "Movie data provided by the OMDb API."
   },
   "meta": {
     "defaultTitle": "Filmoteka — OMDb movie search",

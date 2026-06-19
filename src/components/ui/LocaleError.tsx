@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 
 import type { Dictionary } from "@/i18n/get-dictionary";
+import { interactiveButtonClassName } from "@/lib/ui/classes";
 
 interface ErrorProps {
   error: Error & { digest?: string };
@@ -16,13 +17,18 @@ export function LocaleError({ error, reset, dictionary }: ErrorProps) {
   }, [error]);
 
   return (
-    <div className="mx-auto flex max-w-6xl flex-1 flex-col items-center justify-center px-4 py-16 text-center">
-      <h1 className="text-2xl font-semibold">{dictionary.errors.generic}</h1>
-      <p className="mt-2 text-zinc-600 dark:text-zinc-400">{error.message}</p>
+    <div
+      className="mx-auto flex max-w-6xl flex-1 flex-col items-center justify-center px-4 py-16 text-center"
+      role="alert"
+    >
+      <h1 className="text-2xl font-semibold text-foreground">
+        {dictionary.errors.generic}
+      </h1>
+      <p className="mt-2 text-muted">{error.message}</p>
       <button
         type="button"
         onClick={reset}
-        className="mt-6 rounded-lg bg-zinc-900 px-4 py-2 text-white hover:bg-zinc-700 dark:bg-zinc-100 dark:text-zinc-900"
+        className={`${interactiveButtonClassName} mt-6 rounded-lg bg-accent px-4 py-2 font-medium text-accent-foreground transition-colors hover:bg-accent-hover`}
       >
         {dictionary.errors.retry}
       </button>

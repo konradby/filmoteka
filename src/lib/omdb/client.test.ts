@@ -51,6 +51,7 @@ describe("omdb client", () => {
     expect(result.totalResults).toBe(15);
     expect(result.totalPages).toBe(2);
     expect(result.page).toBe(1);
+    expect(result.items[0]?.Poster).toBe("");
   });
 
   it("maps not found search errors to empty results", async () => {
@@ -107,5 +108,32 @@ describe("omdb client", () => {
 
     expect(movie.Title).toBe("Batman Begins");
     expect(movie.imdbID).toBe("tt0372784");
+    expect(movie.Plot).toBe(
+      "After training with his mentor, Batman begins his fight against crime.",
+    );
+  });
+
+  it("normalizes N/A movie detail fields", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({
+          Response: "True",
+          imdbID: "tt0372784",
+          Title: "Batman Begins",
+          Year: "2005",
+          Plot: "N/A",
+          Poster: "N/A",
+          Director: "N/A",
+        }),
+      }),
+    );
+
+    const movie = await getMovieDetails("tt0372784");
+
+    expect(movie.Plot).toBe("");
+    expect(movie.Poster).toBe("");
+    expect(movie.Director).toBe("");
   });
 });

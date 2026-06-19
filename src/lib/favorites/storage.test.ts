@@ -30,6 +30,7 @@ describe("favorites storage", () => {
     const favorites = addFavorite(sampleMovie);
 
     expect(favorites).toHaveLength(1);
+    expect(favorites[0]?.Poster).toBe("");
     expect(localStorage.getItem(FAVORITES_STORAGE_KEY)).toContain("Batman Begins");
   });
 

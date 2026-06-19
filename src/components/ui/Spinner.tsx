@@ -1,16 +1,31 @@
 interface SpinnerProps {
   label?: string;
+  size?: "sm" | "md" | "lg";
+  className?: string;
 }
 
-export function Spinner({ label = "Loading" }: SpinnerProps) {
+const sizeClasses = {
+  sm: "h-4 w-4 border-2",
+  md: "h-6 w-6 border-[3px]",
+  lg: "h-8 w-8 border-4",
+} as const;
+
+export function Spinner({
+  label = "Loading",
+  size = "md",
+  className = "",
+}: SpinnerProps) {
   return (
-    <div
+    <span
       role="status"
       aria-live="polite"
-      className="flex items-center justify-center py-16"
+      className={`inline-flex items-center justify-center ${className}`}
     >
-      <div className="h-8 w-8 animate-spin rounded-full border-4 border-zinc-200 border-t-zinc-900 dark:border-zinc-700 dark:border-t-zinc-100" />
+      <span
+        aria-hidden="true"
+        className={`animate-spin rounded-full border-border border-t-accent ${sizeClasses[size]}`}
+      />
       <span className="sr-only">{label}</span>
-    </div>
+    </span>
   );
 }

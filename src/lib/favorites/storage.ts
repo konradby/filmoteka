@@ -1,6 +1,23 @@
 import type { FavoriteMovie } from "@/lib/favorites/types";
+import { normalizeOmdbField, normalizeOmdbPoster } from "@/lib/omdb/map-response";
 
 export const FAVORITES_STORAGE_KEY = "imdb-movies-favorites";
+
+function mapFavoriteMovie(raw: Partial<FavoriteMovie>): FavoriteMovie | null {
+  const imdbID = normalizeOmdbField(raw.imdbID);
+
+  if (!imdbID) {
+    return null;
+  }
+
+  return {
+    imdbID,
+    Title: normalizeOmdbField(raw.Title),
+    Year: normalizeOmdbField(raw.Year),
+    Poster: normalizeOmdbPoster(raw.Poster),
+    Type: normalizeOmdbField(raw.Type),
+  };
+}
 
 export function getFavorites(): FavoriteMovie[] {
   if (typeof window === "undefined") return [];
@@ -9,7 +26,13 @@ export function getFavorites(): FavoriteMovie[] {
     const raw = localStorage.getItem(FAVORITES_STORAGE_KEY);
     if (!raw) return [];
     const parsed = JSON.parse(raw) as FavoriteMovie[];
-    return Array.isArray(parsed) ? parsed : [];
+    if (!Array.isArray(parsed)) {
+      return [];
+    }
+
+    return parsed
+      .map((item) => mapFavoriteMovie(item))
+      .filter((item): item is FavoriteMovie => item !== null);
   } catch {
     return [];
   }
@@ -21,10 +44,16 @@ export function saveFavorites(favorites: FavoriteMovie[]): void {
 
 export function addFavorite(movie: FavoriteMovie): FavoriteMovie[] {
   const favorites = getFavorites();
-  if (favorites.some((item) => item.imdbID === movie.imdbID)) {
+  const normalizedMovie = mapFavoriteMovie(movie);
+
+  if (!normalizedMovie) {
     return favorites;
   }
-  const updated = [...favorites, movie];
+
+  if (favorites.some((item) => item.imdbID === normalizedMovie.imdbID)) {
+    return favorites;
+  }
+  const updated = [...favorites, normalizedMovie];
   saveFavorites(updated);
   return updated;
 }

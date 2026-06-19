@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
+import { interactiveLinkClassName } from "@/lib/ui/classes";
 
 interface LanguageSwitcherProps {
   locale: Locale;
@@ -21,7 +22,7 @@ export function LanguageSwitcher({
 
   return (
     <nav aria-label={dictionary.a11y.languageSwitcher}>
-      <ul className="flex gap-1 rounded-lg border border-zinc-200 p-1 dark:border-zinc-700">
+      <ul className="flex gap-1 rounded-lg border border-border bg-surface p-1">
         {(["pl", "en"] as const).map((lang) => {
           const isActive = lang === locale;
           const href =
@@ -31,13 +32,14 @@ export function LanguageSwitcher({
             <li key={lang}>
               <Link
                 href={href}
-                className={`rounded-md px-3 py-1 text-sm font-medium uppercase transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 dark:focus-visible:ring-zinc-100 ${
+                className={`${interactiveLinkClassName} rounded-md px-3 py-1 text-sm font-semibold uppercase transition-colors ${
                   isActive
-                    ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900"
-                    : "text-zinc-600 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                    ? "bg-accent text-accent-foreground"
+                    : "text-muted hover:bg-surface-hover hover:text-foreground"
                 }`}
                 aria-current={isActive ? "true" : undefined}
                 lang={lang}
+                hrefLang={lang}
               >
                 {lang}
               </Link>

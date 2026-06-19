@@ -6,7 +6,7 @@ export function EmptyState({ message }: EmptyStateProps) {
   return (
     <p
       aria-live="polite"
-      className="rounded-lg border border-dashed border-zinc-300 px-6 py-12 text-center text-zinc-600 dark:border-zinc-700 dark:text-zinc-400"
+      className="rounded-xl border border-dashed border-border bg-surface px-6 py-12 text-center text-muted"
     >
       {message}
     </p>

@@ -1,5 +1,23 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+import {
+  FormEvent,
+  useCallback,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+} from "react";
+
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
+import { buildSearchUrl } from "@/lib/search/build-search-url";
+import {
+  interactiveButtonClassName,
+  interactiveInputClassName,
+  interactiveSelectClassName,
+} from "@/lib/ui/classes";
 
 interface SearchFormProps {
   locale: Locale;
@@ -9,6 +27,8 @@ interface SearchFormProps {
   initialType?: string;
 }
 
+const DEBOUNCE_MS = 500;
+
 export function SearchForm({
   locale,
   dictionary,
@@ -16,41 +36,129 @@ export function SearchForm({
   initialYear = "",
   initialType = "",
 }: SearchFormProps) {
+  const router = useRouter();
+  const statusId = useId();
+  const [query, setQuery] = useState(initialQuery);
+  const [year, setYear] = useState(initialYear);
+  const [type, setType] = useState(initialType);
+  const [isPending, setIsPending] = useState(false);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const skipDebounceRef = useRef(true);
+
+  useEffect(() => {
+    setQuery(initialQuery);
+    setYear(initialYear);
+    setType(initialType);
+    setIsPending(false);
+  }, [initialQuery, initialYear, initialType]);
+
+  const navigate = useCallback(
+    (nextQuery: string, nextYear: string, nextType: string) => {
+      const url = buildSearchUrl(locale, {
+        q: nextQuery,
+        year: nextYear,
+        type: nextType,
+        page: 1,
+      });
+
+      const currentUrl = buildSearchUrl(locale, {
+        q: initialQuery,
+        year: initialYear,
+        type: initialType,
+        page: 1,
+      });
+
+      if (url === currentUrl) {
+        setIsPending(false);
+        return;
+      }
+
+      setIsPending(true);
+      router.push(url);
+    },
+    [locale, router, initialQuery, initialYear, initialType],
+  );
+
+  const scheduleSearch = useCallback(
+    (nextQuery: string, nextYear: string, nextType: string) => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+      }
+
+      debounceRef.current = setTimeout(() => {
+        navigate(nextQuery, nextYear, nextType);
+      }, DEBOUNCE_MS);
+    },
+    [navigate],
+  );
+
+  useEffect(() => {
+    if (skipDebounceRef.current) {
+      skipDebounceRef.current = false;
+      return;
+    }
+
+    scheduleSearch(query, year, type);
+
+    return () => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+      }
+    };
+  }, [query, year, type, scheduleSearch]);
+
+  function searchImmediately(
+    nextQuery: string,
+    nextYear: string,
+    nextType: string,
+  ) {
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
+    navigate(nextQuery, nextYear, type);
+  }
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    searchImmediately(query, year, type);
+  }
+
   return (
     <form
-      action={`/${locale}`}
-      method="GET"
-      className="grid gap-4 rounded-xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 sm:p-6"
+      role="search"
+      aria-label={dictionary.a11y.searchForm}
+      onSubmit={handleSubmit}
+      className="rounded-xl border border-border bg-surface p-4 shadow-sm sm:p-6"
     >
-      <div className="grid gap-4 sm:grid-cols-[1fr_auto]">
-        <div>
-          <label htmlFor="search-query" className="sr-only">
-            {dictionary.search.placeholder}
-          </label>
-          <input
-            id="search-query"
-            name="q"
-            type="search"
-            defaultValue={initialQuery}
-            placeholder={dictionary.search.placeholder}
-            className="w-full rounded-lg border border-zinc-300 bg-white px-4 py-3 text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 dark:border-zinc-700 dark:bg-zinc-950 dark:focus-visible:ring-zinc-100"
-            autoComplete="off"
-            required
+      <div className="relative min-w-0 flex-1">
+        <label htmlFor="search-query" className="mb-1.5 block text-sm font-medium text-foreground">
+          {dictionary.search.placeholder}
+        </label>
+        <input
+          id="search-query"
+          name="q"
+          type="search"
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder={dictionary.search.placeholder}
+          className={interactiveInputClassName + " w-full rounded-lg border border-border bg-surface-elevated px-4 py-2.5 text-base text-foreground placeholder:text-muted"}
+          autoComplete="off"
+          aria-busy={isPending}
+          aria-describedby={statusId}
+        />
+        {isPending && (
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute right-3 top-[2.65rem] h-4 w-4 animate-spin rounded-full border-2 border-border border-t-accent"
           />
-        </div>
-        <button
-          type="submit"
-          className="rounded-lg bg-zinc-900 px-6 py-3 font-medium text-white transition-colors hover:bg-zinc-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-300"
-        >
-          {dictionary.search.submit}
-        </button>
+        )}
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="mt-4 grid gap-4 sm:grid-cols-2">
         <div>
           <label
             htmlFor="search-year"
-            className="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-300"
+            className="mb-1.5 block text-sm font-medium text-foreground"
           >
             {dictionary.filters.year}
           </label>
@@ -60,23 +168,25 @@ export function SearchForm({
             type="number"
             min="1888"
             max="2099"
-            defaultValue={initialYear}
+            value={year}
+            onChange={(event) => setYear(event.target.value)}
             placeholder={dictionary.filters.yearPlaceholder}
-            className="w-full rounded-lg border border-zinc-300 bg-white px-4 py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 dark:border-zinc-700 dark:bg-zinc-950 dark:focus-visible:ring-zinc-100"
+            className={interactiveInputClassName + " w-full rounded-lg border border-border bg-surface-elevated px-4 py-2.5 text-base text-foreground placeholder:text-muted"}
           />
         </div>
         <div>
           <label
             htmlFor="search-type"
-            className="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-300"
+            className="mb-1.5 block text-sm font-medium text-foreground"
           >
             {dictionary.filters.type}
           </label>
           <select
             id="search-type"
             name="type"
-            defaultValue={initialType}
-            className="w-full rounded-lg border border-zinc-300 bg-white px-4 py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 dark:border-zinc-700 dark:bg-zinc-950 dark:focus-visible:ring-zinc-100"
+            value={type}
+            onChange={(event) => setType(event.target.value)}
+            className={interactiveSelectClassName + " w-full rounded-lg border border-border bg-surface-elevated px-4 py-2.5 text-base text-foreground"}
           >
             <option value="">{dictionary.filters.typeAll}</option>
             <option value="movie">{dictionary.filters.typeMovie}</option>
@@ -85,6 +195,24 @@ export function SearchForm({
           </select>
         </div>
       </div>
+
+      <button
+        type="submit"
+        disabled={isPending}
+        className={`${interactiveButtonClassName} mt-4 inline-flex min-h-11 w-full items-center justify-center rounded-lg bg-accent px-4 py-2.5 text-sm font-semibold text-accent-foreground transition-colors hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto`}
+      >
+        {isPending ? dictionary.search.loading : dictionary.search.submit}
+      </button>
+
+      <p
+        id={statusId}
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        className="sr-only"
+      >
+        {isPending ? dictionary.search.loading : dictionary.a11y.searchStatus}
+      </p>
     </form>
   );
 }

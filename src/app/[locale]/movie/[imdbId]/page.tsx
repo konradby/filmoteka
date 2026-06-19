@@ -10,6 +10,7 @@ import { formatMessage, getDictionary } from "@/i18n/get-dictionary";
 import { getMovieDetails } from "@/lib/omdb/client";
 import { isValidPosterUrl } from "@/lib/omdb/constants";
 import { OmdbNotFoundError } from "@/lib/omdb/errors";
+import { buildPageMetadata, getLocalizedUrl } from "@/lib/seo/site";
 
 export const dynamic = "force-dynamic";
 
@@ -23,35 +24,42 @@ export async function generateMetadata({
   const { locale: localeParam, imdbId } = await params;
   const locale = localeParam as Locale;
   const dictionary = getDictionary(locale);
+  const path = `/movie/${imdbId}`;
 
   try {
     const movie = await getMovieDetails(imdbId);
+    const title = formatMessage(dictionary.meta.movieTitle, {
+      title: movie.Title,
+      year: movie.Year,
+    });
+    const description = movie.Plot || dictionary.meta.defaultDescription;
+    const poster = isValidPosterUrl(movie.Poster) ? movie.Poster : undefined;
 
-    return {
-      title: formatMessage(dictionary.meta.movieTitle, {
-        title: movie.Title,
-        year: movie.Year,
-      }),
-      description:
-        movie.Plot !== "N/A" ? movie.Plot : dictionary.meta.defaultDescription,
+    return buildPageMetadata({
+      locale,
+      title,
+      description,
+      path,
       openGraph: {
         title: movie.Title,
-        description: movie.Plot !== "N/A" ? movie.Plot : undefined,
-        images: isValidPosterUrl(movie.Poster)
-          ? [{ url: movie.Poster, alt: movie.Title }]
-          : undefined,
+        description,
+        type: "video.movie",
+        images: poster ? [{ url: poster, alt: movie.Title }] : undefined,
       },
       twitter: {
         card: "summary_large_image",
         title: movie.Title,
-        description: movie.Plot !== "N/A" ? movie.Plot : undefined,
-        images: isValidPosterUrl(movie.Poster) ? [movie.Poster] : undefined,
+        description,
+        images: poster ? [poster] : undefined,
       },
-    };
+    });
   } catch {
-    return {
+    return buildPageMetadata({
+      locale,
       title: dictionary.errors.notFound,
-    };
+      description: dictionary.meta.defaultDescription,
+      path,
+    });
   }
 }
 
@@ -70,7 +78,7 @@ export default async function MoviePage({ params }: MoviePageProps) {
     throw error;
   }
 
-  const jsonLd = buildMovieJsonLd(movie);
+  const jsonLd = buildMovieJsonLd(movie, getLocalizedUrl(locale, `/movie/${imdbId}`));
 
   return (
     <main

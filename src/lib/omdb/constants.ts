@@ -10,5 +10,5 @@ export function isOmdbMediaType(value: string): value is OmdbMediaType {
 }
 
 export function isValidPosterUrl(poster: string): boolean {
-  return poster !== "N/A" && poster.startsWith("http");
+  return poster.length > 0 && poster.startsWith("http");
 }

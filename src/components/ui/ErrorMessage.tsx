@@ -7,7 +7,7 @@ export function ErrorMessage({ message }: ErrorMessageProps) {
     <div
       role="alert"
       aria-live="polite"
-      className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-800 dark:border-red-900 dark:bg-red-950/40 dark:text-red-200"
+      className="rounded-lg border border-red-900/60 bg-red-950/30 px-4 py-3 text-red-300"
     >
       {message}
     </div>

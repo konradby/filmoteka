@@ -16,7 +16,7 @@ export function MovieList({ movies, locale, dictionary }: MovieListProps) {
       className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
     >
       {movies.map((movie) => (
-        <li key={movie.imdbID}>
+        <li key={movie.imdbID} className="h-full">
           <MovieCard movie={movie} locale={locale} dictionary={dictionary} />
         </li>
       ))}
