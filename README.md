@@ -1,6 +1,6 @@
 # IMDB Movies — OMDb Search App
 
-Aplikacja do wyszukiwania filmów i seriali z wykorzystaniem [OMDb API](https://www.omdbapi.com/). Zbudowana jako zadanie rekrutacyjne z naciskiem na type safety, SSR, dostępność (WCAG) i SEO.
+Aplikacja do wyszukiwania filmów i seriali z wykorzystaniem [OMDb API](https://www.omdbapi.com/). Projekt z naciskiem na type safety, SSR, dostępność (WCAG) i SEO.
 
 ## Funkcjonalności
 
